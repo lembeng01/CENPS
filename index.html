@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunshine Academy</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            text-align: center;
+            scroll-behavior: smooth;
+        }
+        header {
+            background: url('https://source.unsplash.com/1600x900/?school,children') no-repeat center center/cover;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            animation: fadeIn 2s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin: 0;
+        }
+        .hero p {
+            font-size: 1.5rem;
+        }
+        .btn {
+            display: inline-block;
+            background: #ffcc00;
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            margin-top: 10px;
+            transition: transform 0.3s;
+        }
+        .btn:hover {
+            transform: scale(1.1);
+        }
+        nav {
+            background: #0077cc;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+        nav ul li a:hover {
+            color: #ffcc00;
+        }
+        section {
+            padding: 40px 20px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .grid {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+        }
+        footer {
+            background: #333;
+            color: white;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .visible {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="hero">
+            <h1>Welcome to Sunshine Academy</h1>
+            <p>A joyful place for learning and growth!</p>
+            <a href="#about" class="btn">Learn More</a>
+        </div>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#programs">Programs</a></li>
+            <li><a href="#admissions">Admissions</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    
+    <section id="about">
+        <h2>About Us</h2>
+        <p>Sunshine Academy is dedicated to providing a nurturing and engaging learning environment for children. Our mission is to inspire young minds and build a foundation for lifelong learning.</p>
+    </section>
+    
+    <section id="gallery">
+        <h2>Image Gallery</h2>
+        <div class="grid">
+            <img src="https://source.unsplash.com/300x200/?kids,school" alt="Gallery Image 1">
+            <img src="https://source.unsplash.com/300x200/?education,children" alt="Gallery Image 2">
+            <img src="https://source.unsplash.com/300x200/?classroom,students" alt="Gallery Image 3">
+        </div>
+    </section>
+    
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <p>Email: info@sunshineacademy.com | Phone: +123 456 7890</p>
+        <form>
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" placeholder="Your Message" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+        <h3>Find Us</h3>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8354345093835!2d144.95592831532023!3d-37.81720997975171!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf4c49a1f5c879d68!2sSunshine%20Academy!5e0!3m2!1sen!2sus!4v1614072536613!5m2!1sen!2sus" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </section>
+    
+    <footer>
+        <p>&copy; 2024 Sunshine Academy. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
