@@ -6,6 +6,20 @@
     <title>Crystal Nursury and Primary Learning Center</title>
     <link rel="stylesheet" href="styles.css">
     <script defer src="script.js"></script>
+	<script defer>
+        document.addEventListener("DOMContentLoaded", () => {
+            const images = ["sunflower.jpg", "lion.jpg", "panda.jpg"]; // Add more images as needed
+            let currentIndex = 0;
+            const header = document.querySelector("header");
+            
+            function changeBackground() {
+                header.style.background = `url('${images[currentIndex]}') no-repeat center center/cover`;
+                currentIndex = (currentIndex + 1) % images.length;
+            }
+            
+            setInterval(changeBackground, 2000); // Change image every 2 seconds
+        });
+	</script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,7 +30,7 @@
             text-align: center;
         }
         header {
-            background: url('https://source.unsplash.com/1600x900/?school,children') no-repeat center center/cover;
+            background: url('sunflower.jpg') no-repeat center center/cover;
             height: 60vh;
             display: flex;
             align-items: center;
@@ -97,45 +111,57 @@
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const toggleButton = document.getElementById("language-toggle");
-            const translations = {
-                "en": {
-                    "title": "Welcome to Crystal Nursury and Primary Learning Center",
-                    "subtitle": "A joyful place for learning and growth!",
-                    "about": "Why Choose Us?",
-                    "about-text": "We provide a nurturing environment where children can thrive and develop a love for learning.",
-                    "programs": "Our Programs",
-                    "kindergarten": "Kindergarten",
-                    "primary": "Primary School",
-                    "contact": "Contact Us",
-                    "footer": "&copy; 2024 Sunshine Academy. All Rights Reserved."
-                },
-                "fr": {
-                    "title": "Bienvenue à Crystal Nursury and Primary Learning Center",
-                    "subtitle": "Un lieu joyeux pour apprendre et grandir!",
-                    "about": "Pourquoi nous choisir?",
-                    "about-text": "Nous offrons un environnement bienveillant où les enfants peuvent s'épanouir et développer leur amour pour l'apprentissage.",
-                    "Programs": "Nos Programmes",
-                    "kindergarten": "Maternelle",
-                    "primary": "École primaire",
-                    "contact": "Nous Contacter",
-                    "footer": "&copy; 2024 Académie Sunshine. Tous droits réservés."
-                }
-            };
-            let currentLang = "en";
-            toggleButton.addEventListener("click", () => {
-                currentLang = currentLang === "en" ? "fr" : "en";
-                document.getElementById("hero-title").innerText = translations[currentLang].title;
-                document.getElementById("hero-subtitle").innerText = translations[currentLang].subtitle;
-                document.getElementById("about-title").innerText = translations[currentLang].about;
-                document.getElementById("about-text").innerText = translations[currentLang].about-text;
-                document.getElementById("programs-title").innerText = translations[currentLang].programs;
-                document.getElementById("kindergarten").innerText = translations[currentLang].kindergarten;
-                document.getElementById("primary").innerText = translations[currentLang].primary;
-                document.getElementById("contact-title").innerText = translations[currentLang].contact;
-                document.getElementById("footer-text").innerHTML = translations[currentLang].footer;
-            });
-        });
+    const toggleButton = document.getElementById("language-toggle");
+    const flagImage = document.getElementById("flag-image");
+    const langText = document.getElementById("lang-text");
+
+    const translations = {
+        "en": {
+            "title": "Welcome to Sunshine Academy",
+            "subtitle": "A joyful place for learning and growth!",
+            "about": "Why Choose Us?",
+            "about_text": "We provide a nurturing environment where children can thrive and develop a love for learning.",
+			"aboutsubtitle": "About Crystal English Nursery and Primary School",
+            "programs": "Our Programs",
+            "contact": "Contact Us",
+            "footer": "&copy; 2024 Sunshine Academy. All Rights Reserved.",
+            "flag": "https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg",
+            "lang": "Français"
+        },
+        "fr": {
+            "title": "Bienvenue à l'Académie Sunshine",
+            "subtitle": "Un lieu joyeux pour apprendre et grandir!",
+            "about": "Pourquoi nous choisir?",
+            "about_text": "Nous offrons un environnement bienveillant où les enfants peuvent s'épanouir et développer leur amour pour l'apprentissage.",
+			"aboutsubtitle": "À propos de l'école maternelle et primaire Crystal English",
+            "programs": "Nos Programmes",
+            "contact": "Nous Contacter",
+            "footer": "&copy; 2024 Académie Sunshine. Tous droits réservés.",
+            "flag": "https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg",
+            "lang": "English"
+        }
+    };
+
+    let currentLang = "en";
+
+    toggleButton.addEventListener("click", () => {
+        currentLang = currentLang === "en" ? "fr" : "en";
+
+        document.getElementById("hero-title").innerText = translations[currentLang].title;
+        document.getElementById("hero-subtitle").innerText = translations[currentLang].subtitle;
+        document.getElementById("about-title").innerText = translations[currentLang].about;
+        document.getElementById("about-text").innerText = translations[currentLang].about_text;
+		document.getElementById("about-subtitle").innerText = translations[currentLang].aboutsubtitle;
+        document.getElementById("programs-title").innerText = translations[currentLang].programs;
+        document.getElementById("contact-title").innerText = translations[currentLang].contact;
+        document.getElementById("footer-text").innerHTML = translations[currentLang].footer;
+
+        // Update the flag and language text
+        flagImage.src = translations[currentLang].flag;
+        langText.innerText = translations[currentLang].lang;
+    });
+});
+
     </script>
 </head>
 <body>
@@ -145,7 +171,7 @@
     </button>
     <header>
         <div class="hero">
-            <h1 id="hero-title">Welcome to Crystal Nursury and Primary Learning Center</h1>
+            <h1 id="hero-title">Welcome to Crystal English Nursery and Primary school</h1>
             <p id="hero-subtitle">A joyful place for learning and growth!</p>
             <a href="#about" class="btn">Learn More</a>
         </div>
@@ -163,15 +189,49 @@
     <section id="about">
         <h2 id="about-title">Why Choose Us?</h2>
         <p id="about-text">We provide a nurturing environment where children can thrive and develop a love for learning.</p>
+		<h2 id="about-subtitle">About Crystal English Nursery and Primary School</h2>
+        <p id="about-text">Founded in September 2007 by a dedicated group of four women, Crystal English Nursery and Primary School (CENPS) has been committed to shaping the younger generation into future leaders.</p>
+        
+        <p>With 18 years of academic excellence, our primary goal remains to nurture and equip students with knowledge, discipline, and values that will contribute to a better Cameroon. Over the years, CENPS has not only provided quality education but has also played a vital role in reducing unemployment by creating job opportunities for young professionals.</p>
+        
+        <p>Our commitment to academic excellence is reflected in our 100% success rate in all public examinations, earning us recognition and respect in the educational sector.</p>
+        
+        <p>At CENPS, we believe in creativity and talent development. We encourage students to explore and showcase their abilities in inter-school competitions, where they excel in academics, arts, and sports.</p>
+        
+        <p>Our facilities include a state-of-the-art multimedia center and a spacious playground, ensuring that students have access to both learning and recreational opportunities.</p>
+        
+        <p>Today, CENPS continues to thrive, with a team of 20 dedicated staff members and a security head, ensuring a safe and supportive environment for all learners.</p>
+    </section>
+    
+    <section id="programs">
+        <h2 id="programs-title">Our Programs</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Academics and Enrichment</h3>
+                <p>Primary School students learn early literacy and math skills, as well as science and social studies concepts. Our enrichment program includes motor development, Spanish, drama, music, and library.</p>
+            </div>
+            <div class="card">
+                <h3>Assessment</h3>
+                <p>We use assessments including observations, benchmarks, and portfolios to meet every child where they are and ensure they step forward at the pace that is right for them.</p>
+            </div>
+            <div class="card">
+                <h3>Parent Conferences</h3>
+                <p>We hold parent-teacher conferences multiple times each year, and at other times at the teacher’s or parent’s request. Parents receive detailed reports on their child’s academic and personal development.</p>
+            </div>
+            <div class="card">
+                <h3>Parent Involvement</h3>
+                <p>We encourage parents to take part in our students’ learning lives by volunteering as Homeroom Parents, for studio and class activities, and for St. Francis Parents Organization (SFPO) events.</p>
+            </div>
+        </div>
     </section>
     
     <section id="contact">
         <h2 id="contact-title">Contact Us</h2>
-        <p>Email: info@sunshineacademy.com | Phone: +123 456 7890</p>
+        <p>Email: info@cenaps.com | Phone: +123 456 7890</p>
     </section>
     
     <footer>
-        <p id="footer-text">&copy; 2024 Crystal Nursury and Primary Learning Center. All Rights Reserved.</p>
+        <p id="footer-text">&copy; 2025 Crystal English Nursery and Primary school. All Rights Reserved.</p>
     </footer>
 </body>
 </html>
