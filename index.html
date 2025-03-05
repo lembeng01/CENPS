@@ -35,8 +35,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: black;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            position: relative;
         }
         .hero h1 {
             font-size: 3rem;
@@ -109,69 +110,15 @@
             margin-top: 20px;
         }
     </style>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-    const toggleButton = document.getElementById("language-toggle");
-    const flagImage = document.getElementById("flag-image");
-    const langText = document.getElementById("lang-text");
-
-    const translations = {
-        "en": {
-            "title": "Welcome to Sunshine Academy",
-            "subtitle": "A joyful place for learning and growth!",
-            "about": "Why Choose Us?",
-            "about_text": "We provide a nurturing environment where children can thrive and develop a love for learning.",
-			"aboutsubtitle": "About Crystal English Nursery and Primary School",
-            "programs": "Our Programs",
-            "contact": "Contact Us",
-            "footer": "&copy; 2024 Sunshine Academy. All Rights Reserved.",
-            "flag": "https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg",
-            "lang": "Français"
-        },
-        "fr": {
-            "title": "Bienvenue à l'Académie Sunshine",
-            "subtitle": "Un lieu joyeux pour apprendre et grandir!",
-            "about": "Pourquoi nous choisir?",
-            "about_text": "Nous offrons un environnement bienveillant où les enfants peuvent s'épanouir et développer leur amour pour l'apprentissage.",
-			"aboutsubtitle": "À propos de l'école maternelle et primaire Crystal English",
-            "programs": "Nos Programmes",
-            "contact": "Nous Contacter",
-            "footer": "&copy; 2024 Académie Sunshine. Tous droits réservés.",
-            "flag": "https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg",
-            "lang": "English"
-        }
-    };
-
-    let currentLang = "en";
-
-    toggleButton.addEventListener("click", () => {
-        currentLang = currentLang === "en" ? "fr" : "en";
-
-        document.getElementById("hero-title").innerText = translations[currentLang].title;
-        document.getElementById("hero-subtitle").innerText = translations[currentLang].subtitle;
-        document.getElementById("about-title").innerText = translations[currentLang].about;
-        document.getElementById("about-text").innerText = translations[currentLang].about_text;
-		document.getElementById("about-subtitle").innerText = translations[currentLang].aboutsubtitle;
-        document.getElementById("programs-title").innerText = translations[currentLang].programs;
-        document.getElementById("contact-title").innerText = translations[currentLang].contact;
-        document.getElementById("footer-text").innerHTML = translations[currentLang].footer;
-
-        // Update the flag and language text
-        flagImage.src = translations[currentLang].flag;
-        langText.innerText = translations[currentLang].lang;
-    });
-});
-
-    </script>
 </head>
 <body>
     <button id="language-toggle" class="language-toggle">
         <img src="https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg" alt="French Flag">
-		<span id="lang-text">Français</span>
+        <span id="lang-text">Français</span>
     </button>
     <header>
         <div class="hero">
-            <h1 id="hero-title">Welcome to Crystal English Nursery and Primary school</h1>
+            <h1 id="hero-title" style="background: rgba(255, 255, 255, 0.6); padding: 10px; border-radius: 10px;">Welcome to Crystal English Nursery and Primary School</h1>
             <p id="hero-subtitle">A joyful place for learning and growth!</p>
             <a href="#about" class="btn">Learn More</a>
         </div>
@@ -182,25 +129,35 @@
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About Us</a></li>
             <li><a href="#programs">Programs</a></li>
+			<li><a href="#admissions">Admissions</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
     
-    <section id="about">
-        <h2 id="about-title">Why Choose Us?</h2>
-        <p id="about-text">We provide a nurturing environment where children can thrive and develop a love for learning.</p>
-		<h2 id="about-subtitle">About Crystal English Nursery and Primary School</h2>
-        <p id="about-text">Founded in September 2007 by a dedicated group of four women, Crystal English Nursery and Primary School (CENPS) has been committed to shaping the younger generation into future leaders.</p>
+        <section id="about" style="background-color: #f9f9f9; padding: 50px 20px; text-align: center;">
+        <h2 id="about-title" style="color: #0077cc; font-size: 2rem;">About Crystal English Nursery and Primary School</h2>
+        <div style="max-width: 900px; margin: auto; font-size: 1.1rem; line-height: 1.6;">
+            <p>Founded in <strong>September 2007</strong> by a dedicated group of four women, <strong>Crystal English Nursery and Primary School (CENPS)</strong> has been committed to shaping the younger generation into future leaders.</p>
+            
+            <p>With <strong>18 years of academic excellence</strong>, our primary goal remains <strong>to nurture and equip students with knowledge, discipline, and values</strong> that will contribute to a <strong>better Cameroon</strong>. Over the years, CENPS has not only provided quality education but has also played a vital role in <strong>reducing unemployment</strong> by creating job opportunities for young professionals.</p>
+            
+            <p>Our commitment to <strong>academic excellence</strong> is reflected in our <strong>100% success rate in all public examinations</strong>, earning us <strong>recognition and respect in the educational sector</strong>.</p>
+        </div>
         
-        <p>With 18 years of academic excellence, our primary goal remains to nurture and equip students with knowledge, discipline, and values that will contribute to a better Cameroon. Over the years, CENPS has not only provided quality education but has also played a vital role in reducing unemployment by creating job opportunities for young professionals.</p>
-        
-        <p>Our commitment to academic excellence is reflected in our 100% success rate in all public examinations, earning us recognition and respect in the educational sector.</p>
-        
-        <p>At CENPS, we believe in creativity and talent development. We encourage students to explore and showcase their abilities in inter-school competitions, where they excel in academics, arts, and sports.</p>
-        
-        <p>Our facilities include a state-of-the-art multimedia center and a spacious playground, ensuring that students have access to both learning and recreational opportunities.</p>
-        
-        <p>Today, CENPS continues to thrive, with a team of 20 dedicated staff members and a security head, ensuring a safe and supportive environment for all learners.</p>
+        <div class="grid" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin-top: 30px;">
+            <div class="card" style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 350px; text-align: left;">
+                <h3 style="color: #0077cc;">Creativity & Talent Development</h3>
+                <p>At CENPS, we encourage students to <strong>explore and showcase their abilities</strong> in inter-school competitions, excelling in academics, arts, and sports.</p>
+            </div>
+            <div class="card" style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 350px; text-align: left;">
+                <h3 style="color: #0077cc;">Modern Facilities</h3>
+                <p>Our school features a <strong>state-of-the-art multimedia center</strong> and a <strong>spacious playground</strong>, providing students with an enriching academic and recreational experience.</p>
+            </div>
+            <div class="card" style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 350px; text-align: left;">
+                <h3 style="color: #0077cc;">Safe & Supportive Environment</h3>
+                <p>With a team of <strong>19 dedicated staff members and a security head</strong>, we ensure that students thrive in a secure and nurturing learning atmosphere.</p>
+            </div>
+        </div>
     </section>
     
     <section id="programs">
@@ -224,14 +181,68 @@
             </div>
         </div>
     </section>
+	<section id="admissions" style="background-color: #f4f4f4; padding: 50px 20px; text-align: center;">
+        <h2 id="admissions-title" style="color: #0077cc; font-size: 2rem;">Admissions</h2>
+        <p style="max-width: 800px; margin: auto; font-size: 1.1rem;">At Crystal English Nursery and Primary School, we welcome young learners to embark on a journey of academic excellence and personal growth. Our admissions process is designed to be seamless and inclusive, ensuring that every child has the opportunity to thrive in a nurturing and dynamic learning environment.</p>
+        
+        <div class="grid" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin-top: 30px;">
+            <div class="card" style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 350px; text-align: left;">
+                <h3 style="color: #0077cc;">Admission Requirements</h3>
+                <ul style="text-align: left;">
+                    <li>Completed application form</li>
+                    <li>Copy of birth certificate</li>
+                    <li>Previous school records (if applicable)</li>
+                    <li>Medical report</li>
+                    <li>Passport-sized photographs</li>
+                </ul>
+            </div>
+            <div class="card" style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 350px; text-align: left;">
+                <h3 style="color: #0077cc;">How to Apply</h3>
+                <p>Parents and guardians can obtain the admission form from our school office or download it from our website. Once completed, the form should be submitted along with the required documents. Our admissions team will review applications and schedule an assessment or interview where necessary.</p>
+            </div>
+            <div class="card" style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 350px; text-align: left;">
+                <h3 style="color: #0077cc;">Why Choose Crystal?</h3>
+                <p>With a strong focus on academic excellence, creativity, and character building, we provide a holistic education that prepares students for future success. Join us today and be part of a school that nurtures potential and fosters lifelong learning.</p>
+            </div>
+        </div>
+    <form action="https://formsubmit.co/lembeng2000@gmail.com" method="POST" style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 30px auto;">
+            <h3 style="color: #0077cc;">Online Admission Form</h3>
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" required style="width: 100%; padding: 8px; margin: 5px 0;">
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required style="width: 100%; padding: 8px; margin: 5px 0;">
+            
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required style="width: 100%; padding: 8px; margin: 5px 0;">
+            
+            <label for="grade">Grade Applying For:</label>
+            <select id="grade" name="grade" required style="width: 100%; padding: 8px; margin: 5px 0;">
+                <option value="Nursery">Nursery</option>
+                <option value="Primary 1">Primary 1</option>
+                <option value="Primary 2">Primary 2</option>
+                <option value="Primary 3">Primary 3</option>
+                <option value="Primary 4">Primary 4</option>
+                <option value="Primary 5">Primary 5</option>
+                <option value="Primary 6">Primary 6</option>
+            </select>
+            
+            <label for="message">Additional Information:</label>
+            <textarea id="message" name="message" rows="4" style="width: 100%; padding: 8px; margin: 5px 0;"></textarea>
+            
+            <button type="submit" style="background: #0077cc; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer;">Submit</button>
+        </form>
+    </section>
     
     <section id="contact">
         <h2 id="contact-title">Contact Us</h2>
         <p>Email: info@cenaps.com | Phone: +123 456 7890</p>
+        <p>Address: Crystal English Nursery and Primary School, 
+           123 Learning Street, Douala, Cameroon</p>
     </section>
     
     <footer>
-        <p id="footer-text">&copy; 2025 Crystal English Nursery and Primary school. All Rights Reserved.</p>
+        <p id="footer-text">&copy; 2025 Crystal English Nursery and Primary School. All Rights Reserved.</p>
     </footer>
 </body>
 </html>
