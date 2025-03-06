@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel - Excel-like Sheet</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #eef;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      margin-top: 20px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 80%;
+      margin: 20px auto;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    td[contenteditable="true"] {
+      background-color: #f9f9f9;
+    }
+    .btn {
+      padding: 10px 20px;
+      margin: 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .save-btn {
+      background: #4caf50;
+      color: white;
+    }
+    .logoff-btn {
+      background: #ffcc00;
+      color: #333;
+    }
+  </style>
+  <!-- Updated EmailJS SDK (version 4) from jsDelivr -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function(){
+      emailjs.init({
+        publicKey: "aPS3CbZptW5-JmuFL" // Replace with your actual public key from EmailJS
+      });
+    })();
+
+    // Convert the table to CSV format
+    function tableToCSV() {
+      var csv = [];
+      var rows = document.querySelectorAll("table tr");
+      for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll("td, th");
+        for (var j = 0; j < cols.length; j++) {
+          // Wrap the cell content in quotes to handle commas and newlines in data
+          row.push('"' + cols[j].innerText + '"');
+        }
+        csv.push(row.join(","));
+      }
+      return csv.join("\n");
+    }
+
+    // Send the table data via EmailJS
+    function sendTableData() {
+      var csvData = tableToCSV();
+      emailjs.send("CENPS", "CENPS", {
+        table_data: csvData, // Template variable to be used in your EmailJS template
+        to_email: "lembeng2000@gmail.com" // Optionally pass a recipient email if needed
+      })
+      .then(function(response) {
+        alert("Table data sent successfully!");
+      }, function(error) {
+        alert("Failed to send email: " + JSON.stringify(error));
+      });
+    }
+
+    // Optional logoff function (redirects to main page)
+    function logoff() {
+      window.location.href = "index.html";
+    }
+  </script>
+</head>
+<body>
+  <h1>Administration Panel</h1>
+  <p>Edit the cells below (like in Excel) and click "Save and Email" when you're done.</p>
+  
+  <!-- Editable Table -->
+  <table>
+    <tr>
+      <th>Item</th>
+      <th>Quantity</th>
+      <th>Price</th>
+    </tr>
+    <tr>
+      <td contenteditable="true">Apple</td>
+      <td contenteditable="true">10</td>
+      <td contenteditable="true">0.50</td>
+    </tr>
+    <tr>
+      <td contenteditable="true">Banana</td>
+      <td contenteditable="true">5</td>
+      <td contenteditable="true">0.30</td>
+    </tr>
+    <!-- Add more rows as needed -->
+  </table>
+
+  <!-- Buttons -->
+  <button class="btn save-btn" onclick="sendTableData()">Save and Email</button>
+  <button class="btn logoff-btn" onclick="logoff()">Logoff</button>
+</body>
+</html>
