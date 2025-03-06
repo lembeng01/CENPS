@@ -8,7 +8,8 @@
   <script defer src="script.js"></script>
   <script defer>
     document.addEventListener("DOMContentLoaded", () => {
-      const images = ["sunflower.jpg", "lion.jpg", "panda.jpg"]; // Add more images as needed
+      // Background Image Slider
+      const images = ["student0.jpg", "student1.jpg", "student2.jpg", "student3.jpg", "student4.jpg" ]; // Add more images as needed
       let currentIndex = 0;
       const header = document.querySelector("header");
 
@@ -16,9 +17,9 @@
         header.style.background = `url('${images[currentIndex]}') no-repeat center center/cover`;
         currentIndex = (currentIndex + 1) % images.length;
       }
-
       setInterval(changeBackground, 2000); // Change image every 2 seconds
 
+      // Language Toggle Functionality
       const toggleButton = document.getElementById("language-toggle");
       const flagImage = toggleButton.querySelector("img");
       const langText = document.getElementById("lang-text");
@@ -68,6 +69,22 @@
         flagImage.src = translations[currentLang].flag;
         langText.innerText = translations[currentLang].lang;
       });
+
+      // Administrative Section Password Protection (Demo Only)
+      const adminLoginForm = document.getElementById("admin-login-form");
+      if (adminLoginForm) {
+        adminLoginForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const demoPassword = "admin123"; // Demo password
+          const enteredPassword = document.getElementById("admin-password").value;
+          if (enteredPassword === demoPassword) {
+            // Redirect to the admin page upon successful login
+            window.location.href = "admin.html";
+          } else {
+            alert("Incorrect password. Please try again.");
+          }
+        });
+      }
     });
   </script>
   <style>
@@ -81,7 +98,7 @@
       text-align: center;
     }
     header {
-      background: url('sunflower.jpg') no-repeat center center/cover;
+      background: url('student0.jpg') no-repeat center center/cover;
       height: 60vh;
       display: flex;
       align-items: center;
@@ -207,6 +224,29 @@
         font-size: 1rem;
       }
     }
+
+    /* Admin Section Styles (in-page login) */
+    #admin-section {
+      padding: 40px 20px;
+      background-color: #eef;
+      margin-top: 40px;
+    }
+    #admin-section h2 {
+      margin-bottom: 20px;
+    }
+    #admin-login {
+      margin-bottom: 20px;
+    }
+    #admin-login input {
+      padding: 8px;
+      font-size: 1rem;
+      width: 200px;
+      margin-right: 10px;
+    }
+    #admin-login button {
+      padding: 8px 16px;
+      font-size: 1rem;
+    }
   </style>
 </head>
 <body>
@@ -230,9 +270,12 @@
       <li><a href="#admissions">Admissions</a></li>
       <li><a href="#tuition">Tuition</a></li>
       <li><a href="#contact">Contact</a></li>
+      <!-- Admin link to jump to the admin section -->
+      <li><a href="#admin-section">Administration</a></li>
     </ul>
   </nav>
 
+  <!-- Other Sections -->
   <section id="about" style="background-color: #f9f9f9; padding: 50px 20px; text-align: center;">
     <h2 id="about-title" style="color: #0077cc; font-size: 2rem;">About Crystal English Nursery and Primary School</h2>
     <div style="max-width: 900px; margin: auto; font-size: 1.1rem; line-height: 1.6;">
@@ -405,6 +448,18 @@
     <p>
       Address: Crystal English Nursery and Primary School, 123 Learning Street, Douala, Cameroon
     </p>
+  </section>
+  <!-- New Administrative Section (In-page login option if needed) -->
+  <section id="admin-section">
+    <h2>Administrative Section</h2>
+    <div id="admin-login">
+      <h3>Please enter the password to access administrative functions:</h3>
+      <form id="admin-login-form">
+        <input type="password" id="admin-password" placeholder="Enter password" required />
+        <button type="submit">Login</button>
+      </form>
+    </div>
+    <!-- In this demo, the login form redirects to admin.html -->
   </section>
 
   <footer>
