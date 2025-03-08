@@ -6,10 +6,11 @@
   <title>Crystal English Nursery and Primary school</title>
   <link rel="stylesheet" href="styles.css" />
   <script defer src="script.js"></script>
+  <!-- Main Page Script -->
   <script defer>
     document.addEventListener("DOMContentLoaded", () => {
       // Background Image Slider
-      const images = ["student0.jpg", "student1.jpg", "student2.jpg", "student3.jpg", "student4.jpg" ]; // Add more images as needed
+      const images = ["student0.jpg", "student1.jpg", "student2.jpg", "student3.jpg", "student4.jpg"];
       let currentIndex = 0;
       const header = document.querySelector("header");
 
@@ -17,7 +18,7 @@
         header.style.background = `url('${images[currentIndex]}') no-repeat center center/cover`;
         currentIndex = (currentIndex + 1) % images.length;
       }
-      setInterval(changeBackground, 2000); // Change image every 2 seconds
+      setInterval(changeBackground, 2000);
 
       // Language Toggle Functionality
       const toggleButton = document.getElementById("language-toggle");
@@ -65,7 +66,7 @@
         document.getElementById("contact-title").innerText = translations[currentLang].contact;
         document.getElementById("footer-text").innerHTML = translations[currentLang].footer;
 
-        // Update the flag and language text
+        // Update flag and language text
         flagImage.src = translations[currentLang].flag;
         langText.innerText = translations[currentLang].lang;
       });
@@ -75,14 +76,54 @@
       if (adminLoginForm) {
         adminLoginForm.addEventListener("submit", (e) => {
           e.preventDefault();
-          const demoPassword = "admin123"; // Demo password
+          const demoPassword = "admin123";
           const enteredPassword = document.getElementById("admin-password").value;
           if (enteredPassword === demoPassword) {
-            // Redirect to the admin page upon successful login
             window.location.href = "admin.html";
           } else {
             alert("Incorrect password. Please try again.");
           }
+        });
+      }
+
+      // -----------------------------
+      // Supabase Integration for Admissions Form
+      // -----------------------------
+      // Include Supabase client library via CDN (loaded in the head)
+      const supabaseUrl = 'https://rlejemjqprjlvfomgmev.supabase.co';  // Replace with your Supabase URL
+      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJsZWplbWpxcHJqbHZmb21nbWV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEzOTQzOTQsImV4cCI6MjA1Njk3MDM5NH0.r0zafR0VmQVZFuczBPubIEJK94b5DHV6VkYueQBnuUY';                // Replace with your Supabase anon key
+      const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+      // Async function to submit admission data to Supabase
+      async function submitAdmission(data) {
+        const { data: insertedData, error } = await supabase
+          .from('admissions')
+          .insert([data]);
+        
+        if (error) {
+          console.error('Error inserting admission data:', error);
+          alert("There was an error submitting your admission. Please try again.");
+        } else {
+          console.log('Admission submitted successfully:', insertedData);
+          alert("Admission submitted successfully!");
+        }
+      }
+
+      // Handle admissions form submission
+      const admissionsForm = document.getElementById("admissions-form");
+      if (admissionsForm) {
+        admissionsForm.addEventListener("submit", function(e) {
+          e.preventDefault();
+          const admissionData = {
+            fullName: document.getElementById("name").value,  // using id "name" for full name field
+            email: document.getElementById("email").value,
+            phone: document.getElementById("phone").value,
+            grade: document.getElementById("grade").value,
+            message: document.getElementById("message").value,
+            submittedAt: new Date().toISOString()
+          };
+          submitAdmission(admissionData);
+          admissionsForm.reset();
         });
       }
     });
@@ -181,8 +222,6 @@
       padding: 20px;
       margin-top: 20px;
     }
-
-    /* Responsive Styles */
     @media (max-width: 768px) {
       header {
         height: 40vh;
@@ -224,7 +263,6 @@
         font-size: 1rem;
       }
     }
-
     /* Admin Section Styles (in-page login) */
     #admin-section {
       padding: 40px 20px;
@@ -261,7 +299,6 @@
       <a href="#about" class="btn">Learn More</a>
     </div>
   </header>
-
   <nav>
     <ul>
       <li><a href="#home">Home</a></li>
@@ -270,11 +307,9 @@
       <li><a href="#admissions">Admissions</a></li>
       <li><a href="#tuition">Tuition</a></li>
       <li><a href="#contact">Contact</a></li>
-      <!-- Admin link to jump to the admin section -->
       <li><a href="#admin-section">Administration</a></li>
     </ul>
   </nav>
-
   <!-- Other Sections -->
   <section id="about" style="background-color: #f9f9f9; padding: 50px 20px; text-align: center;">
     <h2 id="about-title" style="color: #0077cc; font-size: 2rem;">About Crystal English Nursery and Primary School</h2>
@@ -310,7 +345,6 @@
       </div>
     </div>
   </section>
-
   <section id="programs">
     <h2 id="programs-title">Our Programs</h2>
     <div class="grid">
@@ -340,7 +374,6 @@
       </div>
     </div>
   </section>
-
   <section id="admissions" style="background-color: #f4f4f4; padding: 50px 20px; text-align: center;">
     <h2 id="admissions-title" style="color: #0077cc; font-size: 2rem;">Admissions</h2>
     <p style="max-width: 800px; margin: auto; font-size: 1.1rem;">
@@ -370,7 +403,8 @@
         </p>
       </div>
     </div>
-    <form action="https://formsubmit.co/lembeng2000@gmail.com" method="POST" style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 30px auto;">
+    <!-- Updated Admission Form (Submission handled via JavaScript to Supabase) -->
+    <form id="admissions-form" style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 30px auto;">
       <h3 style="color: #0077cc;">Online Admission Form</h3>
       <label for="name">Full Name:</label>
       <input type="text" id="name" name="name" required style="width: 100%; padding: 8px; margin: 5px 0;" />
@@ -398,7 +432,6 @@
       <button type="submit" style="background: #0077cc; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer;">Submit</button>
     </form>
   </section>
-
   <section id="tuition" style="background-color: #f4f4f4; padding: 50px 20px; text-align: center;">
     <h2 id="tuition-title" style="color: #0077cc; font-size: 2rem;">Tuition</h2>
     <p style="max-width: 800px; margin: auto; font-size: 1.1rem;">
@@ -441,7 +474,6 @@
       </p>
     </div>
   </section>
-
   <section id="contact">
     <h2 id="contact-title">Contact Us</h2>
     <p>Email: info@cenaps.com | Phone: +123 456 7890</p>
@@ -461,7 +493,6 @@
     </div>
     <!-- In this demo, the login form redirects to admin.html -->
   </section>
-
   <footer>
     <p id="footer-text">&copy; 2025 Crystal English Nursery and Primary school. All Rights Reserved.</p>
   </footer>
