@@ -3,22 +3,78 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Panel - Excel-like Sheet</title>
+  <title>Admin Panel - Supabase Integration</title>
   <style>
+    /* Your existing CSS styles go here */
     body {
       font-family: Arial, sans-serif;
       background-color: #eef;
       margin: 0;
-      padding: 20px;
-      text-align: center;
+      padding: 0;
+      display: flex;
+      min-height: 100vh;
     }
-    h1 {
-      margin-top: 20px;
+    .admin-sidebar {
+      width: 220px;
+      background: #0077cc;
+      padding: 20px;
+      color: white;
+    }
+    .admin-sidebar h2 {
+      margin-top: 0;
+    }
+    .admin-sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+    .admin-sidebar ul li {
+      margin: 15px 0;
+    }
+    .admin-sidebar ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .admin-main {
+      flex: 1;
+      padding: 20px;
+      background: #f9f9f9;
+      overflow-y: auto;
+    }
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0077cc;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    .admin-header button {
+      background: #ffcc00;
+      color: #333;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .admin-section {
+      display: none;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .admin-section.active {
+      display: block;
     }
     table {
       border-collapse: collapse;
-      width: 80%;
-      margin: 20px auto;
+      width: 100%;
+      margin: 20px 0;
     }
     table, th, td {
       border: 1px solid #ccc;
@@ -32,7 +88,7 @@
     }
     .btn {
       padding: 10px 20px;
-      margin: 20px;
+      margin: 10px 5px;
       font-size: 1rem;
       border: none;
       border-radius: 5px;
@@ -47,23 +103,130 @@
       color: #333;
     }
   </style>
-  <!-- Updated EmailJS SDK (version 4) from jsDelivr -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script type="text/javascript">
-    (function(){
-      emailjs.init({
-        publicKey: "aPS3CbZptW5-JmuFL" // Replace with your actual public key from EmailJS
-      });
-    })();
 
-    // Convert the table to CSV format
+  <!-- EmailJS SDK (if still needed for emailing features) -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <!-- Supabase Client Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+  <!-- Initialize Supabase -->
+  <script>
+    // Replace with your actual Supabase URL and anon key from the Supabase dashboard
+    const supabaseUrl = 'https://rlejemjqprjlvfomgmev.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJsZWplbWpxcHJqbHZmb21nbWV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEzOTQzOTQsImV4cCI6MjA1Njk3MDM5NH0.r0zafR0VmQVZFuczBPubIEJK94b5DHV6VkYueQBnuUY';
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    // Example function to insert admissions data (you can call this from your form submission)
+    async function submitAdmission(data) {
+      const { data: insertedData, error } = await supabase
+        .from('admissions') // Make sure you have created an "admissions" table in Supabase
+        .insert([data]);
+      
+      if (error) {
+        console.error('Error inserting admission data:', error);
+      } else {
+        console.log('Admission submitted successfully:', insertedData);
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="admin-sidebar">
+    <h2>Admin Dashboard</h2>
+    <ul>
+      <li><a href="#" data-target="inventory-management">Inventory Management</a></li>
+      <li><a href="#" data-target="admissions-management">Admissions</a></li>
+      <li><a href="#" data-target="content-management">Content</a></li>
+      <li><a href="#" data-target="payments-management">Payments</a></li>
+      <li><a href="#" data-target="analytics">Analytics</a></li>
+      <li><a href="#" data-target="user-management">User Management</a></li>
+    </ul>
+  </div>
+  <div class="admin-main">
+    <header class="admin-header">
+      <h1>Administration Panel</h1>
+      <button class="logoff-btn" onclick="logoff()">Logoff</button>
+    </header>
+
+    <!-- Inventory Management Panel (Excel-like Table) -->
+    <section id="inventory-management" class="admin-section">
+      <h2>Inventory Management</h2>
+      <p>Edit the cells below (like in Excel) and click "Save and Email" when you're done.</p>
+      <table id="inventory-table">
+        <tr>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Price</th>
+        </tr>
+        <tr>
+          <td contenteditable="true">Apple</td>
+          <td contenteditable="true">10</td>
+          <td contenteditable="true">0.50</td>
+        </tr>
+        <tr>
+          <td contenteditable="true">Banana</td>
+          <td contenteditable="true">5</td>
+          <td contenteditable="true">0.30</td>
+        </tr>
+      </table>
+      <button class="btn save-btn" onclick="sendTableData()">Save and Email</button>
+    </section>
+
+    <!-- Admissions Management Panel -->
+    <section id="admissions-management" class="admin-section">
+      <h2>Admissions Management</h2>
+      <p>Review and process admission applications here.</p>
+      <table id="admissions-table">
+        <thead>
+          <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Grade</th>
+            <th>Message</th>
+            <th>Submitted At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Admissions data will be inserted here -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Content Management Panel -->
+    <section id="content-management" class="admin-section">
+      <h2>Content Management</h2>
+      <p>Edit website content such as text and images.</p>
+    </section>
+
+    <!-- Payments Management Panel -->
+    <section id="payments-management" class="admin-section">
+      <h2>Payments Management</h2>
+      <p>View and manage tuition payment transactions.</p>
+    </section>
+
+    <!-- Analytics Panel -->
+    <section id="analytics" class="admin-section">
+      <h2>Site Analytics</h2>
+      <p>Overview of visitor statistics and website performance metrics.</p>
+    </section>
+
+    <!-- User Management Panel -->
+    <section id="user-management" class="admin-section">
+      <h2>User Management</h2>
+      <p>Manage administrator and teacher accounts.</p>
+    </section>
+  </div>
+
+  <script>
+    // EmailJS: Convert the table to CSV format and send email
     function tableToCSV() {
       var csv = [];
-      var rows = document.querySelectorAll("table tr");
+      var rows = document.querySelectorAll("#inventory-table tr");
       for (var i = 0; i < rows.length; i++) {
         var row = [], cols = rows[i].querySelectorAll("td, th");
         for (var j = 0; j < cols.length; j++) {
-          // Wrap the cell content in quotes to handle commas and newlines in data
           row.push('"' + cols[j].innerText + '"');
         }
         csv.push(row.join(","));
@@ -71,12 +234,11 @@
       return csv.join("\n");
     }
 
-    // Send the table data via EmailJS
     function sendTableData() {
       var csvData = tableToCSV();
       emailjs.send("CENPS", "CENPS", {
-        table_data: csvData, // Template variable to be used in your EmailJS template
-        to_email: "lembeng2000@gmail.com" // Optionally pass a recipient email if needed
+        table_data: csvData,
+        to_email: "lembeng2000@gmail.com"
       })
       .then(function(response) {
         alert("Table data sent successfully!");
@@ -85,38 +247,33 @@
       });
     }
 
-    // Optional logoff function (redirects to main page)
+    // Optional logoff function
     function logoff() {
-      window.location.href = "index.html";
+      window.location.href = "test.html";
     }
-  </script>
-</head>
-<body>
-  <h1>Administration Panel</h1>
-  <p>Edit the cells below (like in Excel) and click "Save and Email" when you're done.</p>
-  
-  <!-- Editable Table -->
-  <table>
-    <tr>
-      <th>Item</th>
-      <th>Quantity</th>
-      <th>Price</th>
-    </tr>
-    <tr>
-      <td contenteditable="true">Apple</td>
-      <td contenteditable="true">10</td>
-      <td contenteditable="true">0.50</td>
-    </tr>
-    <tr>
-      <td contenteditable="true">Banana</td>
-      <td contenteditable="true">5</td>
-      <td contenteditable="true">0.30</td>
-    </tr>
-    <!-- Add more rows as needed -->
-  </table>
 
-  <!-- Buttons -->
-  <button class="btn save-btn" onclick="sendTableData()">Save and Email</button>
-  <button class="btn logoff-btn" onclick="logoff()">Logoff</button>
+    // Navigation for admin panels
+    document.addEventListener("DOMContentLoaded", function() {
+      const navLinks = document.querySelectorAll(".admin-sidebar ul li a");
+      const sections = document.querySelectorAll(".admin-section");
+
+      navLinks.forEach(link => {
+        link.addEventListener("click", function(e) {
+          e.preventDefault();
+          const target = this.getAttribute("data-target");
+          sections.forEach(section => {
+            section.classList.remove("active");
+            if(section.id === target) {
+              section.classList.add("active");
+            }
+          });
+        });
+      });
+      // Activate the first section by default
+      if (sections.length > 0) {
+        sections[0].classList.add("active");
+      }
+    });
+  </script>
 </body>
 </html>
