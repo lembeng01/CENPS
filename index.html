@@ -66,7 +66,7 @@
         document.getElementById("contact-title").innerText = translations[currentLang].contact;
         document.getElementById("footer-text").innerHTML = translations[currentLang].footer;
 
-        // Update flag and language text
+        // Update the flag and language text
         flagImage.src = translations[currentLang].flag;
         langText.innerText = translations[currentLang].lang;
       });
@@ -89,12 +89,11 @@
       // -----------------------------
       // Supabase Integration for Admissions Form
       // -----------------------------
-      // Include Supabase client library via CDN (loaded in the head)
-      const supabaseUrl = 'https://rlejemjqprjlvfomgmev.supabase.co';  // Replace with your Supabase URL
-      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJsZWplbWpxcHJqbHZmb21nbWV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEzOTQzOTQsImV4cCI6MjA1Njk3MDM5NH0.r0zafR0VmQVZFuczBPubIEJK94b5DHV6VkYueQBnuUY';                // Replace with your Supabase anon key
+      const supabaseUrl = 'https://YOUR_PROJECT_ID.supabase.co';  // Replace with your Supabase URL
+      const supabaseKey = 'YOUR_SUPABASE_ANON_KEY';                // Replace with your Supabase anon key
       const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-      // Async function to submit admission data to Supabase
+      // Define the async function to submit admission data to Supabase
       async function submitAdmission(data) {
         const { data: insertedData, error } = await supabase
           .from('admissions')
@@ -108,6 +107,8 @@
           alert("Admission submitted successfully!");
         }
       }
+      // Expose the function globally so you can test it from the console
+      window.submitAdmission = submitAdmission;
 
       // Handle admissions form submission
       const admissionsForm = document.getElementById("admissions-form");
@@ -115,7 +116,7 @@
         admissionsForm.addEventListener("submit", function(e) {
           e.preventDefault();
           const admissionData = {
-            fullName: document.getElementById("name").value,  // using id "name" for full name field
+            fullName: document.getElementById("name").value,
             email: document.getElementById("email").value,
             phone: document.getElementById("phone").value,
             grade: document.getElementById("grade").value,
@@ -403,7 +404,7 @@
         </p>
       </div>
     </div>
-    <!-- Updated Admission Form (Submission handled via JavaScript to Supabase) -->
+    <!-- Updated Admission Form -->
     <form id="admissions-form" style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 30px auto;">
       <h3 style="color: #0077cc;">Online Admission Form</h3>
       <label for="name">Full Name:</label>
