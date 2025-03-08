@@ -89,13 +89,15 @@
       // -----------------------------
       // Supabase Integration for Admissions Form
       // -----------------------------
-      const supabaseUrl = 'https://rlejemjqprjlvfomgmev.supabase.co';  // Replace with your Supabase URL
-      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJsZWplbWpxcHJqbHZmb21nbWV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEzOTQzOTQsImV4cCI6MjA1Njk3MDM5NH0.r0zafR0VmQVZFuczBPubIEJK94b5DHV6VkYueQBnuUY';                // Replace with your Supabase anon key
-      const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+      // Replace these placeholders with your actual Supabase URL and anon key
+      const supabaseUrl = 'https://rlejemjqprjlvfomgmev.supabase.co';
+      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJsZWplbWpxcHJqbHZmb21nbWV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEzOTQzOTQsImV4cCI6MjA1Njk3MDM5NH0.r0zafR0VmQVZFuczBPubIEJK94b5DHV6VkYueQBnuUY';
+      // Use a different variable name (supabaseClient) to avoid shadowing the global supabase object
+      const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
       // Define the async function to submit admission data to Supabase
       async function submitAdmission(data) {
-        const { data: insertedData, error } = await supabase
+        const { data: insertedData, error } = await supabaseClient
           .from('admissions')
           .insert([data]);
         
