@@ -514,3 +514,29 @@ footer a {
     overflow-x: auto;
   }
 }
+
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+  .admin-sidebar {
+    width: 100%;
+    padding: 10px;
+    /* Optionally, move the sidebar below the main content */
+    order: 2;
+  }
+  .admin-main {
+    width: 100%;
+    padding: 10px;
+    order: 1;
+  }
+  .admin-sidebar ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .admin-sidebar ul li {
+    margin: 5px;
+    flex: 1 1 45%; /* Adjust this value as needed */
+  }
+}
