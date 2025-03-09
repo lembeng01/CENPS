@@ -481,3 +481,16 @@ footer a {
     font-size: 1rem;
   }
 }
+
+@media (max-width: 600px) {
+  body {
+    flex-direction: column;
+  }
+  .admin-sidebar {
+    width: 100%;
+    padding: 10px;
+  }
+  .admin-main {
+    padding: 10px;
+  }
+}
