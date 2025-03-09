@@ -540,3 +540,18 @@ footer a {
     flex: 1 1 45%; /* Adjust this value as needed */
   }
 }
+
+@media (max-width: 768px) {
+  /* Allow horizontal scrolling for tables */
+  #student-tables-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  /* Adjust table cell padding and font size for mobile */
+  #student-tables-container table,
+  #student-tables-container th,
+  #student-tables-container td {
+    padding: 5px;
+    font-size: 0.9rem;
+  }
+}
