@@ -1,28 +1,516 @@
+/* CSS Variables for Theme Colors */
+:root {
+  --primary-black: #000;
+  --primary-yellow: #ffcc00;
+  --accent-dark: #e6b800;
+  --secondary-black: #333;
+  --light-gray: #f4f7f9;
+  --dark-blue: #003366;
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: var(--light-gray);
+  color: var(--primary-black);
+  line-height: 1.6;
+  scroll-behavior: smooth;
+}
+
+/* Language Toggle */
+.language-toggle {
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.language-toggle:hover {
+  transform: scale(1.1);
+}
+
+.language-toggle img {
+  width: 30px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+/* Header & Hero Section */
+header#home {
+  position: relative;
+  height: 70vh;
+  background: url('student0.jpg') no-repeat center center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--primary-yellow);
+  overflow: hidden;
+  transition: background 0.5s ease-in-out;
+}
+
+.hero {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px 30px;
+  border-radius: 10px;
+  animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero h1 {
+  font-size: 2.8rem;
+  margin-bottom: 10px;
+  color: var(--primary-yellow);
+}
+
+.hero p {
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.btn {
+  display: inline-block;
+  background: var(--primary-yellow);
+  color: var(--primary-black);
+  padding: 10px 25px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: background 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.btn:hover {
+  background: var(--accent-dark);
+  transform: translateY(-2px);
+}
+
+/* Navigation - Yellow Background, Black Links with Underline Animation */
+nav {
+  background: var(--primary-yellow);
+  padding: 12px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1500;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  transition: background 0.3s ease;
+}
+
+nav ul {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+}
+
+nav ul li {
+  margin: 0 15px;
+}
+
+nav ul li a {
+  color: var(--primary-black);
+  text-decoration: none;
+  font-size: 1.1rem;
+  padding: 8px 15px;
+  border-radius: 25px;
+  position: relative;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* Underline animation for hover/active states */
+nav ul li a::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+  width: 100%;
+  height: 2px;
+  background: var(--primary-black);
+  transition: transform 0.3s ease;
+}
+
+nav ul li a:hover::after,
+nav ul li a.active::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  transform: translateY(-2px);
+}
+
+/* Container for Page Sections */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+/* Page Header */
+.page-header {
+  text-align: center;
+  padding: 40px 0;
+  background: var(--primary-black);
+  color: var(--primary-yellow);
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.page-header p {
+  font-size: 1.2rem;
+}
+
+/* Intro Section */
+.intro {
+  background: #fff;
+  padding: 60px 0;
+  text-align: center;
+}
+
+.intro h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: var(--primary-black);
+}
+
+.intro p {
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  color: var(--secondary-black);
+}
+
+/* Curriculum Section */
+.curriculum {
+  background: #fff;
+  padding: 40px 0;
+  text-align: left;
+}
+
+.curriculum h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: var(--primary-black);
+}
+
+.curriculum p {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: var(--secondary-black);
+}
+
+/* Floating Card for Curriculum Content with Dark Blue Background and White Text */
+.floating-card {
+  background: var(--dark-blue);
+  color: #fff;
+  padding: 30px 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 40px auto;
+  max-width: 800px;
+}
+
+.floating-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* Ensure text inside floating card is white */
+.floating-card h2,
+.floating-card p {
+  color: #fff;
+}
+
+/* Responsive Images */
+.responsive-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* Full-Width Image */
+.full-width-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Floating Image */
+.float-img {
+  float: left;
+  width: 60%;
+  margin: 0 20px 20px 0;
+  object-fit: cover;
+}
+
+/* Clearfix for floated elements */
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Cards (used in Programs and Payment Plans) */
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+/* Admission Form Styling */
+.admission-form {
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin: 30px auto;
+  max-width: 600px;
+  text-align: left;
+}
+
+.admission-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--primary-yellow);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: var(--primary-black);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--primary-yellow);
+  outline: none;
+}
+
+.admission-form .btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1rem;
+  margin-top: 10px;
+  background: var(--primary-yellow);
+  color: var(--primary-black);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.admission-form .btn:hover {
+  background: var(--accent-dark);
+}
+
+/* Contact Form Styling */
+.contact-form-container {
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin: 30px auto;
+  max-width: 600px;
+  text-align: left;
+}
+
+.contact-form-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--primary-yellow);
+}
+
+.contact-form .form-group {
+  margin-bottom: 20px;
+}
+
+.contact-form .form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: var(--primary-black);
+}
+
+.contact-form .form-group input,
+.contact-form .form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.contact-form .form-group input:focus,
+.contact-form .form-group textarea:focus {
+  border-color: var(--primary-yellow);
+  outline: none;
+}
+
+.contact-form .btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1rem;
+  margin-top: 10px;
+  background: var(--primary-yellow);
+  color: var(--primary-black);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.contact-form .btn:hover {
+  background: var(--accent-dark);
+}
+
+/* Footer */
+footer {
+  background: var(--primary-black);
+  color: var(--primary-yellow);
+  padding: 20px 0;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* Force footer copyright text to be white */
+#footer-text {
+  color: #fff;
+}
+
+/* Footer Contact Section */
+.footer-contact {
+  margin-bottom: 10px;
+}
+
+.footer-contact h3 {
+  font-size: 1.4rem;
+  margin-bottom: 5px;
+  color: var(--primary-yellow);
+}
+
+.footer-contact p {
+  font-size: 0.95rem;
+}
+
+/* Footer link styling (email links) */
+footer a {
+  color: #0077cc;
+  text-decoration: underline;
+}
+
+/* Responsive Styles */
 @media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+  .hero p {
+    font-size: 1.1rem;
+  }
+  nav ul li {
+    margin: 0 8px;
+  }
+  nav ul li a {
+    font-size: 1rem;
+    padding: 6px 10px;
+  }
+  .float-img {
+    float: none;
+    width: 100%;
+    margin: 0 0 20px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .language-toggle {
+    top: 10px;
+    right: 10px;
+  }
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+  .hero p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    flex-direction: column;
+  }
   .admin-sidebar {
     width: 100%;
     padding: 10px;
-    text-align: center;
   }
-  
-  .admin-sidebar h2 {
-    font-size: 1.5rem;
+  .admin-main {
+    padding: 10px;
   }
-  
-  .admin-sidebar ul {
-    display: flex;
+}
+
+@media (max-width: 600px) {
+  /* Allow the navigation items to wrap if they exceed the width */
+  nav ul {
     flex-wrap: wrap;
-    justify-content: center;
-    padding: 0;
   }
-  
-  .admin-sidebar ul li {
-    margin: 5px;
-    flex: 1 1 45%; /* Adjust the percentage as needed */
+  /* Reduce margins between items */
+  nav ul li {
+    margin: 0 5px;
   }
-  
-  .admin-sidebar ul li a {
-    padding: 8px;
+  /* Decrease padding and font size for nav links */
+  nav ul li a {
+    padding: 6px 8px;
     font-size: 0.9rem;
+  }
+  /* Optional: ensure nav itself doesn't overflow */
+  nav {
+    overflow-x: auto;
   }
 }
