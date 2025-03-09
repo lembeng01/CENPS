@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-translate="page_title">Crystal English Nursery & Primary School | Admissions</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <!-- Language Toggle -->
+  <button id="language-toggle" class="language-toggle">
+    <img src="https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg" alt="French Flag" />
+    <span id="lang-text" data-translate="language_button">Français</span>
+  </button>
+
+  <!-- Navigation -->
+  <nav>
+    <ul>
+      <li><a href="index.html" data-translate="nav_home">Home</a></li>
+      <li><a href="about.html" data-translate="nav_about">About Us</a></li>
+      <li><a href="programs.html" data-translate="nav_programs">Programs</a></li>
+      <li><a href="admissions.html" class="active" data-translate="nav_admissions">Admissions</a></li>
+      <li><a href="tuition.html" data-translate="nav_tuition">Tuition</a></li>
+      <li><a href="contact.html" data-translate="nav_contact">Contact</a></li>
+      <li><a href="login.html" data-translate="nav_admin">Administration</a></li>
+    </ul>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <h1 data-translate="admissions_heading">Admissions</h1>
+    <p data-translate="admissions_subheading">Join our community of lifelong learners</p>
+  </header>
+
+  <!-- Admissions Info Section -->
+  <section class="admissions-info container">
+    <p data-translate="admissions_info">
+      We welcome applications from enthusiastic learners and their families. Please review our admission requirements and fill out the online application form below.
+    </p>
+    <h3 data-translate="admissions_requirements_heading">Admission Requirements</h3>
+    <ul>
+      <li data-translate="admissions_req1">Completed Application Form</li>
+      <li data-translate="admissions_req2">Birth Certificate</li>
+      <li data-translate="admissions_req3">Previous School Records (if applicable)</li>
+      <li data-translate="admissions_req4">Medical Report</li>
+      <li data-translate="admissions_req5">Passport-Sized Photographs</li>
+    </ul>
+  </section>
+
+  <!-- Online Admission Form Section -->
+  <section class="admission-form container">
+    <h2 data-translate="admissions_form_heading">Apply Online</h2>
+    <form id="admissions-form">
+      <div class="form-group">
+        <label for="name" data-translate="admissions_form_label_name">Full Name:</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+      <div class="form-group">
+        <label for="email" data-translate="admissions_form_label_email">Email:</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+      <div class="form-group">
+        <label for="phone" data-translate="admissions_form_label_phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" required />
+      </div>
+      <div class="form-group">
+        <label for="grade" data-translate="admissions_form_label_grade">Grade Applying For:</label>
+        <select id="grade" name="grade" required>
+          <option value="Nursery" data-translate="admissions_form_option_nursery">Nursery</option>
+          <option value="Primary 1" data-translate="admissions_form_option_primary1">Primary 1</option>
+          <option value="Primary 2" data-translate="admissions_form_option_primary2">Primary 2</option>
+          <option value="Primary 3" data-translate="admissions_form_option_primary3">Primary 3</option>
+          <option value="Primary 4" data-translate="admissions_form_option_primary4">Primary 4</option>
+          <option value="Primary 5" data-translate="admissions_form_option_primary5">Primary 5</option>
+          <option value="Primary 6" data-translate="admissions_form_option_primary6">Primary 6</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="message" data-translate="admissions_form_label_message">Additional Information:</label>
+        <textarea id="message" name="message" rows="4"></textarea>
+      </div>
+      <button type="submit" class="btn" data-translate="admissions_form_button">Submit Application</button>
+    </form>
+  </section>
+
+  <!-- Footer with Contact Us -->
+  <footer>
+    <div class="container">
+      <div class="footer-contact">
+        <h3 data-translate="footer_contact_heading">Contact Us</h3>
+        <p data-translate="footer_contact_info">
+          Email: <a href="mailto:info@cenaps.com">info@cenaps.com</a> | Phone: +123 456 7890
+        </p>
+        <p data-translate="footer_contact_address">
+          Address: 123 Learning Street, Douala, Cameroon
+        </p>
+      </div>
+      <p id="footer-text" data-translate="footer_copyright">
+        © 2025 Crystal English Nursery & Primary School. All Rights Reserved.
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

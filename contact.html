@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-translate="page_title">Crystal English Nursery & Primary School | Contact</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <!-- Language Toggle -->
+  <button id="language-toggle" class="language-toggle">
+    <img src="https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg" alt="French Flag" />
+    <span id="lang-text" data-translate="language_button">Français</span>
+  </button>
+
+  <!-- Navigation -->
+  <nav>
+    <ul>
+      <li><a href="index.html" data-translate="nav_home">Home</a></li>
+      <li><a href="about.html" data-translate="nav_about">About Us</a></li>
+      <li><a href="programs.html" data-translate="nav_programs">Programs</a></li>
+      <li><a href="admissions.html" data-translate="nav_admissions">Admissions</a></li>
+      <li><a href="tuition.html" data-translate="nav_tuition">Tuition</a></li>
+      <li><a href="contact.html" class="active" data-translate="nav_contact">Contact</a></li>
+      <li><a href="login.html" data-translate="nav_admin">Administration</a></li>
+    </ul>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <h1 data-translate="contact_heading">Contact Us</h1>
+    <p data-translate="contact_subheading">We're here to help</p>
+  </header>
+
+  <!-- Contact Information Section -->
+  <section class="contact-info container">
+    <p data-translate="contact_info">
+      Email: <a href="mailto:info@cenaps.com">info@cenaps.com</a><br />
+      Phone: +123 456 7890<br />
+      Address: 123 Learning Street, Douala, Cameroon
+    </p>
+  </section>
+
+  <!-- Contact Form Section -->
+  <section class="contact-form-container container">
+    <h2 data-translate="contact_form_heading">Send Us a Message</h2>
+    <form class="contact-form">
+      <div class="form-group">
+        <label for="contact-name" data-translate="contact_form_label_name">Name:</label>
+        <input type="text" id="contact-name" name="contact-name" required />
+      </div>
+      <div class="form-group">
+        <label for="contact-email" data-translate="contact_form_label_email">Email:</label>
+        <input type="email" id="contact-email" name="contact-email" required />
+      </div>
+      <div class="form-group">
+        <label for="contact-message" data-translate="contact_form_label_message">Message:</label>
+        <textarea id="contact-message" name="contact-message" rows="4" required></textarea>
+      </div>
+      <button type="submit" class="btn" data-translate="contact_form_button">Send Message</button>
+    </form>
+  </section>
+
+  <!-- Footer with Contact Us -->
+  <footer>
+    <div class="container">
+      <div class="footer-contact">
+        <h3 data-translate="footer_contact_heading">Contact Us</h3>
+        <p data-translate="footer_contact_info">
+          Email: <a href="mailto:info@cenaps.com">info@cenaps.com</a> | Phone: +123 456 7890
+        </p>
+        <p data-translate="footer_contact_address">
+          Address: 123 Learning Street, Douala, Cameroon
+        </p>
+      </div>
+      <p id="footer-text" data-translate="footer_copyright">
+        © 2025 Crystal English Nursery & Primary School. All Rights Reserved.
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

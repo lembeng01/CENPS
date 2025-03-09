@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Panel - Supabase Integration</title>
   <style>
-    /* Your existing CSS styles go here */
+    /* Base Styles for Admin Panel */
     body {
       font-family: Arial, sans-serif;
       background-color: #eef;
@@ -19,22 +19,84 @@
       background: #0077cc;
       padding: 20px;
       color: white;
+      position: relative;
     }
     .admin-sidebar h2 {
       margin-top: 0;
     }
+	/* Hover style for Admin Dashboard header */
+	 .admin-sidebar h2:hover {
+      background-color: #005fa3; /* Change to your desired highlight color */
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 4px;
+	}
     .admin-sidebar ul {
       list-style: none;
       padding: 0;
+      margin: 0;
     }
     .admin-sidebar ul li {
       margin: 15px 0;
+      position: relative;
     }
     .admin-sidebar ul li a {
       color: white;
       text-decoration: none;
       font-weight: bold;
       cursor: pointer;
+      display: block;
+      padding: 10px;
+      transition: background 0.3s ease;
+    }
+    .admin-sidebar ul li a:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+    }
+    /* Dropdown Styles */
+    .dropdown-toggle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .dropdown-toggle .arrow {
+      transition: transform 0.3s ease;
+    }
+    .dropdown.active .dropdown-toggle .arrow {
+      transform: rotate(180deg);
+    }
+    .dropdown-menu {
+      position: absolute;
+      left: 0;
+      top: 100%;
+      background: #000080; /* Navy blue */
+      width: 100%;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      transform: scaleY(0);
+      transform-origin: top;
+      opacity: 0;
+      visibility: hidden;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      z-index: 100;
+    }
+    .dropdown.active .dropdown-menu {
+      transform: scaleY(1);
+      opacity: 1;
+      visibility: visible;
+    }
+    .dropdown-menu li {
+      margin: 0;
+    }
+    .dropdown-menu li a {
+      display: block;
+      padding: 8px 12px;
+      color: #fff;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+    .dropdown-menu li a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
     }
     .admin-main {
       flex: 1;
@@ -67,23 +129,45 @@
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       margin-bottom: 20px;
+      animation: fadeIn 0.5s ease;
     }
     .admin-section.active {
       display: block;
     }
-    table {
+    /* Admissions Table Styles */
+    #admissions-table {
       border-collapse: collapse;
       width: 100%;
       margin: 20px 0;
     }
-    table, th, td {
+    #admissions-table, #admissions-table th, #admissions-table td {
       border: 1px solid #ccc;
     }
-    th, td {
+    #admissions-table th, #admissions-table td {
       padding: 10px;
       text-align: left;
     }
-    td[contenteditable="true"] {
+    /* Container for Dynamic Student Tables */
+    #student-tables-container table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 20px 0;
+      transition: background-color 0.3s ease;
+    }
+    #student-tables-container table:hover {
+      background-color: #fcfcfc;
+    }
+    #student-tables-container table, 
+    #student-tables-container th, 
+    #student-tables-container td {
+      border: 1px solid #ccc;
+    }
+    #student-tables-container th, 
+    #student-tables-container td {
+      padding: 10px;
+      text-align: left;
+    }
+    #student-tables-container td[contenteditable="true"] {
       background-color: #f9f9f9;
     }
     .btn {
@@ -102,40 +186,465 @@
       background: #ffcc00;
       color: #333;
     }
+    .add-row-btn, .clear-table-btn {
+      background: #0077cc;
+      color: white;
+      margin-top: 10px;
+    }
+    /* Toast Notification Styles */
+    #toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: #333;
+      color: #fff;
+      padding: 15px 20px;
+      border-radius: 5px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      z-index: 200;
+    }
+    #toast.show {
+      opacity: 1;
+    }
+    /* Loading Spinner */
+    .spinner-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 300;
+      display: none;
+    }
+    .spinner {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #0077cc;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 400;
+    }
+    .modal {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      width: 300px;
+      text-align: center;
+    }
+    .modal button {
+      margin: 10px;
+    }
   </style>
-
-  <!-- EmailJS SDK (if still needed for emailing features) -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
-  <!-- Supabase Client Library -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
-  <!-- Initialize Supabase -->
+  
+  <!-- Supabase Client Library (UMD build) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
+  
+  <!-- Initialize Supabase and Check Authentication -->
   <script>
-    // Replace with your actual Supabase URL and anon key from the Supabase dashboard
+    // Replace with your actual Supabase URL and anon key
     const supabaseUrl = 'https://rlejemjqprjlvfomgmev.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJsZWplbWpxcHJqbHZmb21nbWV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEzOTQzOTQsImV4cCI6MjA1Njk3MDM5NH0.r0zafR0VmQVZFuczBPubIEJK94b5DHV6VkYueQBnuUY';
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-    // Example function to insert admissions data (you can call this from your form submission)
-    async function submitAdmission(data) {
-      const { data: insertedData, error } = await supabase
-        .from('admissions') // Make sure you have created an "admissions" table in Supabase
-        .insert([data]);
-      
-      if (error) {
-        console.error('Error inserting admission data:', error);
+    document.addEventListener("DOMContentLoaded", async () => {
+      showSpinner(true);
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (!session) {
+        window.location.href = "login.html";
       } else {
-        console.log('Admission submitted successfully:', insertedData);
+        console.log("Logged in user:", session.user);
+        await loadStudentData();
+        await loadAdmissions();
+      }
+      showSpinner(false);
+    });
+  </script>
+  
+  <!-- Toast Notification and Modal Functions -->
+  <script>
+    function showToast(message, duration = 3000) {
+      const toast = document.getElementById('toast');
+      toast.innerText = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, duration);
+    }
+    
+    function showSpinner(show) {
+      document.querySelector('.spinner-overlay').style.display = show ? 'flex' : 'none';
+    }
+    
+    function showModal(message, callback) {
+      const modalOverlay = document.getElementById('modal-overlay');
+      document.getElementById('modal-message').innerText = message;
+      modalOverlay.style.display = 'flex';
+      
+      // Set up confirmation buttons
+      document.getElementById('modal-confirm').onclick = function() {
+        modalOverlay.style.display = 'none';
+        callback(true);
+      }
+      document.getElementById('modal-cancel').onclick = function() {
+        modalOverlay.style.display = 'none';
+        callback(false);
       }
     }
   </script>
+  
+  <!-- Admission Submission and Data Functions -->
+  <script>
+    async function submitAdmission(data) {
+      showSpinner(true);
+      const { data: insertedData, error } = await supabaseClient
+        .from('admissions')
+        .insert([data]);
+      showSpinner(false);
+      if (error) {
+        console.error('Error inserting admission data:', error);
+        showToast("Error submitting admission. Please try again.");
+      } else {
+        console.log('Admission submitted successfully:', insertedData);
+        showToast("Admission submitted successfully!");
+      }
+    }
+    window.submitAdmission = submitAdmission;
+  </script>
+  
+  <!-- Student List, Dropdown, and Persistence Functions -->
+  <script>
+    let currentGrade = "";
+    let studentTables = {}; // Holds a table element for each grade
+
+    function toggleDropdown() {
+      const dropdown = document.querySelector(".dropdown");
+      dropdown.classList.toggle("active");
+    }
+
+    function setStudentGrade(grade) {
+      currentGrade = grade;
+      document.getElementById("current-grade-display").innerText = grade;
+      showStudentTableForGrade(grade);
+      document.querySelector(".dropdown").classList.remove("active");
+      console.log("Selected grade:", grade);
+    }
+	// ADD THIS CODE HERE:
+    // Auto-hide the dropdown when the mouse leaves its area.
+    document.addEventListener("DOMContentLoaded", () => {
+      const dropdown = document.querySelector(".dropdown");
+      if (dropdown) {
+        dropdown.addEventListener("mouseleave", function() {
+          this.classList.remove("active");
+        });
+      }
+    });
+    // END OF ADDED CODE
+    function showStudentTableForGrade(grade) {
+      const container = document.getElementById("student-tables-container");
+      // Hide all existing tables.
+      Array.from(container.children).forEach(child => child.style.display = "none");
+      if (!studentTables[grade]) {
+        const table = document.createElement("table");
+        table.id = "student-table-" + grade.replace(/\s+/g, "-").toLowerCase();
+        table.innerHTML = `
+          <thead>
+            <tr>
+              <th>Student Name</th>
+              <th>Grade</th>
+              <th>Email</th>
+              <th>Phone</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        `;
+        container.appendChild(table);
+        studentTables[grade] = table;
+      }
+      studentTables[grade].style.display = "table";
+      showStudentList();
+    }
+
+    function showStudentList() {
+      const sections = document.querySelectorAll(".admin-section");
+      sections.forEach(section => section.classList.remove("active"));
+      document.getElementById("student-list").classList.add("active");
+    }
+
+    function addStudentRowForCurrentGrade() {
+      if (!currentGrade) {
+        showToast("Please select a grade first.");
+        return;
+      }
+      const table = studentTables[currentGrade];
+      const tbody = table.querySelector("tbody");
+      const newRow = document.createElement("tr");
+      newRow.innerHTML = `
+        <td contenteditable="true" title="Edit student name"></td>
+        <td contenteditable="true" title="Grade" style="background:#f0f0f0;">${currentGrade}</td>
+        <td contenteditable="true" title="Edit email"></td>
+        <td contenteditable="true" title="Edit phone"></td>
+      `;
+      tbody.appendChild(newRow);
+    }
+    
+    function clearStudentTableForCurrentGrade() {
+      if (!currentGrade) {
+        showToast("Please select a grade first.");
+        return;
+      }
+      showModal("Are you sure you want to clear the current table?", async (confirmed) => {
+        if (confirmed) {
+          const table = studentTables[currentGrade];
+          table.querySelector("tbody").innerHTML = "";
+          showToast("Table cleared.");
+        }
+      });
+    }
+
+    function downloadStudentTableDataForCurrentGrade() {
+      if (!currentGrade) {
+        showToast("Please select a grade first.");
+        return;
+      }
+      const table = studentTables[currentGrade];
+      if (!table) {
+        showToast("No data available for " + currentGrade);
+        return;
+      }
+      let csv = [];
+      let rows = table.querySelectorAll("tr");
+      for (let i = 0; i < rows.length; i++) {
+        let row = [];
+        let cols = rows[i].querySelectorAll("td, th");
+        for (let j = 0; j < cols.length; j++) {
+          row.push('"' + cols[j].innerText + '"');
+        }
+        csv.push(row.join(","));
+      }
+      const csvData = csv.join("\n");
+      const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", currentGrade + "_students.csv");
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    async function updateStudentTableForCurrentGrade() {
+      if (!currentGrade) {
+        showToast("Please select a grade first.");
+        return;
+      }
+      showModal("Do you want to update student data to Supabase?", async (confirmed) => {
+        if (!confirmed) return;
+        showSpinner(true);
+        const table = studentTables[currentGrade];
+        const rows = table.querySelectorAll("tbody tr");
+        const studentsData = [];
+        // Retrieve the current user's ID.
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        const userId = session?.user?.id;
+        rows.forEach(row => {
+          const cells = row.querySelectorAll("td");
+          studentsData.push({
+            student_name: cells[0].innerText.trim(),
+            grade: cells[1].innerText.trim(),
+            email: cells[2].innerText.trim(),
+            phone: cells[3].innerText.trim(),
+            user_id: userId
+          });
+        });
+        const { data, error } = await supabaseClient
+          .from('students')
+          .insert(studentsData);
+        showSpinner(false);
+        if (error) {
+          showToast("Error updating students: " + JSON.stringify(error));
+          console.error("Insert error:", error);
+        } else {
+          showToast("Student data updated successfully!");
+          console.log("Insert response:", data);
+        }
+      });
+    }
+
+    async function downloadAllStudentData() {
+      showSpinner(true);
+      const { data: students, error } = await supabaseClient
+        .from('students')
+        .select('*');
+      showSpinner(false);
+      if (error) {
+        showToast("Error fetching student data: " + JSON.stringify(error));
+        return;
+      }
+      let csv = [];
+      csv.push('"Student Name","Grade","Email","Phone","User ID"');
+      students.forEach(student => {
+        csv.push(`"${student.student_name}","${student.grade}","${student.email}","${student.phone}","${student.user_id}"`);
+      });
+      const csvData = csv.join("\n");
+      const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", "all_students.csv");
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    async function loadStudentData() {
+      showSpinner(true);
+      const { data: students, error } = await supabaseClient
+        .from('students')
+        .select('*');
+      showSpinner(false);
+      if (error) {
+        console.error("Error loading student data:", error);
+        return;
+      }
+      const container = document.getElementById("student-tables-container");
+      container.innerHTML = "";
+      studentTables = {};
+      const studentsByGrade = {};
+      students.forEach(student => {
+        if (!studentsByGrade[student.grade]) {
+          studentsByGrade[student.grade] = [];
+        }
+        studentsByGrade[student.grade].push(student);
+      });
+      for (const grade in studentsByGrade) {
+        const table = document.createElement("table");
+        table.id = "student-table-" + grade.replace(/\s+/g, "-").toLowerCase();
+        table.innerHTML = `
+          <thead>
+            <tr>
+              <th>Student Name</th>
+              <th>Grade</th>
+              <th>Email</th>
+              <th>Phone</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        `;
+        const tbody = table.querySelector("tbody");
+        studentsByGrade[grade].forEach(student => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td contenteditable="true">${student.student_name}</td>
+            <td contenteditable="true">${student.grade}</td>
+            <td contenteditable="true">${student.email}</td>
+            <td contenteditable="true">${student.phone}</td>
+          `;
+          tbody.appendChild(row);
+        });
+        container.appendChild(table);
+        studentTables[grade] = table;
+      }
+    }
+  </script>
+  
+  <!-- Admissions Data Loading -->
+  <script>
+    async function loadAdmissions() {
+      showSpinner(true);
+      const { data: admissions, error } = await supabaseClient
+        .from('admissions')
+        .select('*')
+        .order('submittedAt', { ascending: false });
+      showSpinner(false);
+      if (error) {
+        console.error("Error fetching admissions data:", error);
+        return;
+      }
+      const tbody = document.getElementById("admissions-table-body");
+      tbody.innerHTML = "";
+      admissions.forEach(admission => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${admission.fullName}</td>
+          <td>${admission.email}</td>
+          <td>${admission.phone}</td>
+          <td>${admission.grade}</td>
+          <td>${admission.message}</td>
+          <td>${new Date(admission.submittedAt).toLocaleString()}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+  </script>
+  
 </head>
 <body>
+  <!-- Spinner Overlay -->
+  <div class="spinner-overlay">
+    <div class="spinner"></div>
+  </div>
+  
+  <!-- Toast Notification -->
+  <div id="toast"></div>
+  
+  <!-- Modal Overlay -->
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal">
+      <p id="modal-message"></p>
+      <button id="modal-confirm" class="btn save-btn">Confirm</button>
+      <button id="modal-cancel" class="btn logoff-btn">Cancel</button>
+    </div>
+  </div>
+  
   <div class="admin-sidebar">
-    <h2>Admin Dashboard</h2>
+    <h2 style="cursor:pointer;" onclick="window.location.reload();">
+  Admin Dashboard
+</h2>
+
     <ul>
-      <li><a href="#" data-target="inventory-management">Inventory Management</a></li>
+      <!-- Student List with dropdown arrow -->
+      <li class="dropdown">
+        <a href="javascript:void(0)" class="dropdown-toggle" onclick="toggleDropdown()">
+          Student List <span class="arrow">&#9662;</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="#" onclick="setStudentGrade('Nursery')">Nursery</a></li>
+          <li><a href="#" onclick="setStudentGrade('Primary 1')">Primary 1</a></li>
+          <li><a href="#" onclick="setStudentGrade('Primary 2')">Primary 2</a></li>
+          <li><a href="#" onclick="setStudentGrade('Primary 3')">Primary 3</a></li>
+          <li><a href="#" onclick="setStudentGrade('Primary 4')">Primary 4</a></li>
+          <li><a href="#" onclick="setStudentGrade('Primary 5')">Primary 5</a></li>
+          <li><a href="#" onclick="setStudentGrade('Primary 6')">Primary 6</a></li>
+        </ul>
+      </li>
       <li><a href="#" data-target="admissions-management">Admissions</a></li>
       <li><a href="#" data-target="content-management">Content</a></li>
       <li><a href="#" data-target="payments-management">Payments</a></li>
@@ -143,34 +652,24 @@
       <li><a href="#" data-target="user-management">User Management</a></li>
     </ul>
   </div>
+  
   <div class="admin-main">
     <header class="admin-header">
       <h1>Administration Panel</h1>
-      <button class="logoff-btn" onclick="logoff()">Logoff</button>
+      <button class="logoff-btn" onclick="showModal('Are you sure you want to log off?', () => { supabaseClient.auth.signOut(); window.location.href = 'login.html'; })" title="Click to log off">Log Off</button>
     </header>
 
-    <!-- Inventory Management Panel (Excel-like Table) -->
-    <section id="inventory-management" class="admin-section">
-      <h2>Inventory Management</h2>
-      <p>Edit the cells below (like in Excel) and click "Save and Email" when you're done.</p>
-      <table id="inventory-table">
-        <tr>
-          <th>Item</th>
-          <th>Quantity</th>
-          <th>Price</th>
-        </tr>
-        <tr>
-          <td contenteditable="true">Apple</td>
-          <td contenteditable="true">10</td>
-          <td contenteditable="true">0.50</td>
-        </tr>
-        <tr>
-          <td contenteditable="true">Banana</td>
-          <td contenteditable="true">5</td>
-          <td contenteditable="true">0.30</td>
-        </tr>
-      </table>
-      <button class="btn save-btn" onclick="sendTableData()">Save and Email</button>
+    <!-- Student List Panel -->
+    <section id="student-list" class="admin-section active">
+      <h2>Student List</h2>
+      <p id="selected-grade-label">Selected Grade: <span id="current-grade-display">None</span></p>
+      <div id="student-tables-container">
+        <!-- Dynamic tables will be inserted here for each grade -->
+      </div>
+      <button class="btn add-row-btn" onclick="addStudentRowForCurrentGrade()" title="Add a new row">Add Row</button>
+      <button class="btn save-btn" onclick="downloadStudentTableDataForCurrentGrade()" title="Download CSV for current grade">Download CSV</button>
+      <button class="btn save-btn" onclick="updateStudentTableForCurrentGrade()" title="Save changes">Save</button>
+      <button class="btn save-btn" onclick="downloadAllStudentData()" title="Download all student data">Download All Student Data</button>
     </section>
 
     <!-- Admissions Management Panel -->
@@ -188,7 +687,7 @@
             <th>Submitted At</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="admissions-table-body">
           <!-- Admissions data will be inserted here -->
         </tbody>
       </table>
@@ -198,79 +697,52 @@
     <section id="content-management" class="admin-section">
       <h2>Content Management</h2>
       <p>Edit website content such as text and images.</p>
+      <!-- Add interactive content management options here -->
     </section>
 
     <!-- Payments Management Panel -->
     <section id="payments-management" class="admin-section">
       <h2>Payments Management</h2>
       <p>View and manage tuition payment transactions.</p>
+      <!-- Interactive payment functionalities can be added here -->
     </section>
 
     <!-- Analytics Panel -->
     <section id="analytics" class="admin-section">
       <h2>Site Analytics</h2>
       <p>Overview of visitor statistics and website performance metrics.</p>
+      <!-- Analytics charts or data visualization components can be integrated here -->
     </section>
 
     <!-- User Management Panel -->
     <section id="user-management" class="admin-section">
       <h2>User Management</h2>
       <p>Manage administrator and teacher accounts.</p>
+      <!-- Additional interactive features for user management -->
     </section>
   </div>
 
+  <!-- Navigation for Sidebar Links -->
   <script>
-    // EmailJS: Convert the table to CSV format and send email
-    function tableToCSV() {
-      var csv = [];
-      var rows = document.querySelectorAll("#inventory-table tr");
-      for (var i = 0; i < rows.length; i++) {
-        var row = [], cols = rows[i].querySelectorAll("td, th");
-        for (var j = 0; j < cols.length; j++) {
-          row.push('"' + cols[j].innerText + '"');
-        }
-        csv.push(row.join(","));
-      }
-      return csv.join("\n");
-    }
-
-    function sendTableData() {
-      var csvData = tableToCSV();
-      emailjs.send("CENPS", "CENPS", {
-        table_data: csvData,
-        to_email: "lembeng2000@gmail.com"
-      })
-      .then(function(response) {
-        alert("Table data sent successfully!");
-      }, function(error) {
-        alert("Failed to send email: " + JSON.stringify(error));
-      });
-    }
-
-    // Optional logoff function
-    function logoff() {
-      window.location.href = "index.html";
-    }
-
-    // Navigation for admin panels
     document.addEventListener("DOMContentLoaded", function() {
       const navLinks = document.querySelectorAll(".admin-sidebar ul li a");
       const sections = document.querySelectorAll(".admin-section");
-
       navLinks.forEach(link => {
         link.addEventListener("click", function(e) {
-          e.preventDefault();
           const target = this.getAttribute("data-target");
-          sections.forEach(section => {
-            section.classList.remove("active");
-            if(section.id === target) {
-              section.classList.add("active");
-            }
-          });
+          if (target) {
+            e.preventDefault();
+            sections.forEach(section => {
+              section.classList.remove("active");
+              if (section.id === target) {
+                section.classList.add("active");
+              }
+            });
+          }
         });
       });
-      // Activate the first section by default
-      if (sections.length > 0) {
+      // Ensure the student list is shown by default if no section is active
+      if (![...sections].some(s => s.classList.contains("active"))) {
         sections[0].classList.add("active");
       }
     });
