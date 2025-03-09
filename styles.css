@@ -494,3 +494,23 @@ footer a {
     padding: 10px;
   }
 }
+
+@media (max-width: 600px) {
+  /* Allow the navigation items to wrap if they exceed the width */
+  nav ul {
+    flex-wrap: wrap;
+  }
+  /* Reduce margins between items */
+  nav ul li {
+    margin: 0 5px;
+  }
+  /* Decrease padding and font size for nav links */
+  nav ul li a {
+    padding: 6px 8px;
+    font-size: 0.9rem;
+  }
+  /* Optional: ensure nav itself doesn't overflow */
+  nav {
+    overflow-x: auto;
+  }
+}
