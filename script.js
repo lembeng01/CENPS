@@ -205,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("language", currentLanguage);
     translatePage(currentLanguage);
     const flagImg = toggleButton.querySelector("img");
-    flagImg.src = (currentLanguage === "en") ? englishFlagURL : frenchFlagURL;
+    flagImg.src = (currentLanguage === "en") ? frenchFlagURL : englishFlagURL;
   });
   
   // Initial translation on page load
