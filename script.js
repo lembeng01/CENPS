@@ -196,8 +196,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   // Define flag image URLs
-  const englishFlagURL = "https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg";
   const frenchFlagURL = "https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg";
+  const englishFlagURL = "https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg";
   
   const toggleButton = document.getElementById("language-toggle");
   toggleButton.addEventListener("click", () => {
