@@ -555,3 +555,32 @@ footer a {
     font-size: 0.9rem;
   }
 }
+
+@media (max-width: 768px) {
+  .admin-sidebar {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .admin-sidebar h2 {
+    font-size: 1.5rem;
+  }
+  
+  .admin-sidebar ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+  }
+  
+  .admin-sidebar ul li {
+    margin: 5px;
+    flex: 1 1 45%; /* Adjust the percentage as needed */
+  }
+  
+  .admin-sidebar ul li a {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+}
