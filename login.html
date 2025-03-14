@@ -5,30 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Login</title>
   <link rel="stylesheet" href="styles.css" />
-  <!-- Include Supabase client library -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
-  <script>
-    // Initialize Supabase client (use your own URL and anon key)
-    const supabaseUrl = 'https://rlejemjqprjlvfomgmev.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJsZWplbWpxcHJqbHZmb21nbWV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEzOTQzOTQsImV4cCI6MjA1Njk3MDM5NH0.r0zafR0VmQVZFuczBPubIEJK94b5DHV6VkYueQBnuUY';
-    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-    
-    async function login(e) {
-      e.preventDefault();
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-      
-      if (error) {
-        alert("Login failed: " + error.message);
-      } else {
-        // Redirect to admin panel if login is successful
-        window.location.href = "admin.html";
-      }
-    }
-  </script>
+  <!-- Remove the inline script that contains login() and load login.js instead -->
+  <script defer src="login.js"></script>
   <style>
-    /* Modern and Interactive Login Page Styling */
+    /* Your login page styles */
     body {
       font-family: 'Roboto', sans-serif;
       background: linear-gradient(135deg, #003366, #001f3f);
@@ -47,21 +27,6 @@
       width: 90%;
       max-width: 400px;
       text-align: center;
-      transform: translateY(-20px);
-      opacity: 0;
-      animation: fadeInUp 0.8s forwards;
-    }
-    
-    @keyframes fadeInUp {
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-    
-    h2 {
-      margin-bottom: 20px;
-      color: #003366;
     }
     
     input {
@@ -71,12 +36,6 @@
       border: 1px solid #ccc;
       border-radius: 5px;
       font-size: 1rem;
-      transition: border-color 0.3s ease;
-    }
-    
-    input:focus {
-      outline: none;
-      border-color: #003366;
     }
     
     button {
@@ -89,33 +48,14 @@
       color: #fff;
       font-size: 1.1rem;
       cursor: pointer;
-      transition: background 0.3s ease, transform 0.2s ease;
-    }
-    
-    button:hover {
-      background: #001f3f;
-      transform: translateY(-2px);
-    }
-    
-    /* Responsive tweaks */
-    @media (max-width: 480px) {
-      form {
-        padding: 20px 20px;
-      }
-      h2 {
-        font-size: 1.5rem;
-      }
-      button {
-        font-size: 1rem;
-      }
     }
   </style>
 </head>
 <body>
-  <form onsubmit="login(event)">
+  <form id="loginForm" autocomplete="off">
     <h2>Admin Login</h2>
-    <input type="email" id="email" placeholder="Email" required />
-    <input type="password" id="password" placeholder="Password" required />
+    <input type="text" id="username" name="username" placeholder="Username" autocomplete="username" required />
+    <input type="password" id="password" name="password" placeholder="Password" autocomplete="current-password" required />
     <button type="submit">Login</button>
   </form>
 </body>
