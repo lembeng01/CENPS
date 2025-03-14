@@ -200,18 +200,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const englishFlagURL = "https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg";
   
   const toggleButton = document.getElementById("language-toggle");
-  toggleButton.addEventListener("click", () => {
-    currentLanguage = (currentLanguage === "en") ? "fr" : "en";
-    localStorage.setItem("language", currentLanguage);
+  if (toggleButton) {
+    toggleButton.addEventListener("click", () => {
+      currentLanguage = (currentLanguage === "en") ? "fr" : "en";
+      localStorage.setItem("language", currentLanguage);
+      translatePage(currentLanguage);
+      const flagImg = toggleButton.querySelector("img");
+      flagImg.src = (currentLanguage === "en") ? frenchFlagURL : englishFlagURL;
+    });
+  
+    // Initial translation on page load
     translatePage(currentLanguage);
     const flagImg = toggleButton.querySelector("img");
-    flagImg.src = (currentLanguage === "en") ? frenchFlagURL : englishFlagURL;
-  });
-  
-  // Initial translation on page load
-  translatePage(currentLanguage);
-  const flagImg = toggleButton.querySelector("img");
-  flagImg.src = (currentLanguage === "en") ? englishFlagURL : frenchFlagURL;
+    flagImg.src = (currentLanguage === "en") ? englishFlagURL : frenchFlagURL;
+  }
   
   // Navigation Active State Handling
   const navLinks = document.querySelectorAll("nav ul li a");
@@ -223,26 +225,29 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   
   // -----------------------------
-  // Supabase Integration for Admissions Form
-  const supabaseUrl = 'https://rlejemjqprjlvfomgmev.supabase.co';  // Replace with your Supabase URL
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInRlciI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJsZWplbWpxcHJqbHZmb21nbWV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEzOTQzOTQsImV4cCI6MjA1Njk3MDM5NH0.r0zafR0VmQVZFuczBPubIEJK94b5DHV6VkYueQBnuUY';
-  const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-
+  // Custom Admissions Form Submission (No Supabase)
   async function submitAdmission(data) {
-    const { data: insertedData, error } = await supabaseClient
-      .from('admissions')
-      .insert([data]);
-    
-    if (error) {
-      console.error('Error inserting admission data:', error);
+    try {
+      const response = await fetch('submitAdmission.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      const result = await response.json();
+      if (result.success) {
+        alert("Admission submitted successfully!");
+      } else {
+        alert("Error submitting admission: " + result.message);
+      }
+    } catch (error) {
+      console.error("Error submitting admission:", error);
       alert("There was an error submitting your admission. Please try again.");
-    } else {
-      console.log('Admission submitted successfully:', insertedData);
-      alert("Admission submitted successfully!");
     }
   }
   window.submitAdmission = submitAdmission;
-
+  
   // Handle Admissions Form Submission (if form exists)
   const admissionsForm = document.getElementById("admissions-form");
   if (admissionsForm) {
