@@ -264,7 +264,7 @@
   <!-- Custom JavaScript (No Supabase) -->
   <script>
     // Update your API base URL to use the subdomain for your PHP backend
-    const API_BASE_URL = "http://api.crystalenaps.com/";
+    const API_BASE_URL = "https://api.crystalenaps.com/";
 
     // Check session by calling a custom PHP endpoint
     async function checkSession() {
@@ -283,7 +283,7 @@
       try {
         const response = await fetch(API_BASE_URL + 'getstudents.php?dummy=' + Date.now());
         if (!response.ok) {
-          console.error("HTTP error:", response.statusText);
+          console.error("HTTPS error:", response.statusText);
           return;
         }
         const result = await response.json();
@@ -346,7 +346,7 @@
       try {
         const response = await fetch(API_BASE_URL + 'getadmissions.php');
         if (!response.ok) {
-          console.error("HTTP error:", response.statusText);
+          console.error("HTTPS error:", response.statusText);
           return;
         }
         const result = await response.json();
