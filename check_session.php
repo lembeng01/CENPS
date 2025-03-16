@@ -1,10 +1,13 @@
 <?php
-session_start();
+// Set CORS headers for cross-origin requests with credentials
+header("Access-Control-Allow-Origin: https://crystalenaps.com"); // Replace with your actual frontend domain if different
+header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json');
 
-// Check if the user session exists
+session_start();
+
+// Check if the user session exists and return session data if available
 if (isset($_SESSION['user'])) {
-    // You can return additional user information if needed
     echo json_encode([
         "logged_in" => true,
         "user"      => $_SESSION['user']
