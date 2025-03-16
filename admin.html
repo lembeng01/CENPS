@@ -263,13 +263,13 @@
   
   <!-- Custom JavaScript (No Supabase) -->
   <script>
-    // Update your API base URL to use the subdomain for your PHP backend
+    // Set the API base URL to your subdomain (ensure this is HTTPS if your certificate is installed)
     const API_BASE_URL = "https://api.crystalenaps.com/";
 
     // Check session by calling a custom PHP endpoint
     async function checkSession() {
       try {
-        const response = await fetch(API_BASE_URL + 'check_session.php');
+        const response = await fetch(API_BASE_URL + 'check_session.php', { credentials: 'include' });
         const result = await response.json();
         return result; // Expected format: { logged_in: true, user: { ... } }
       } catch (error) {
@@ -278,10 +278,10 @@
       }
     }
     
-    // Updated loadStudentData function to repopulate the UI with saved student records
+    // Load student data from the backend and update the UI
     async function loadStudentData() {
       try {
-        const response = await fetch(API_BASE_URL + 'getstudents.php?dummy=' + Date.now());
+        const response = await fetch(API_BASE_URL + 'getstudents.php?dummy=' + Date.now(), { credentials: 'include' });
         if (!response.ok) {
           console.error("HTTPS error:", response.statusText);
           return;
@@ -341,10 +341,10 @@
       }
     }
     
-    // Define loadAdmissions() function to update the admissions table
+    // Load admissions data and update the table in the UI
     async function loadAdmissions() {
       try {
-        const response = await fetch(API_BASE_URL + 'getadmissions.php');
+        const response = await fetch(API_BASE_URL + 'getadmissions.php', { credentials: 'include' });
         if (!response.ok) {
           console.error("HTTPS error:", response.statusText);
           return;
@@ -561,7 +561,8 @@
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ grade: currentGrade, students: studentsData })
+            body: JSON.stringify({ grade: currentGrade, students: studentsData }),
+            credentials: 'include'
           });
           const result = await response.json();
           showSpinner(false);
@@ -583,7 +584,7 @@
     async function downloadAllStudentData() {
       showSpinner(true);
       try {
-        const response = await fetch(API_BASE_URL + 'getAllStudents.php');
+        const response = await fetch(API_BASE_URL + 'getAllStudents.php', { credentials: 'include' });
         const result = await response.json();
         showSpinner(false);
         if (result.error) {
@@ -612,10 +613,157 @@
       }
     }
     
-    // Logout function using custom PHP endpoint
     async function logout() {
       showSpinner(true);
       try {
-        const response = await fetch(API_BASE_URL + 'logout.php', { method: 'POST' });
+        const response = await fetch(API_BASE_URL + 'logout.php', { method: 'POST', credentials: 'include' });
         const result = await response.json();
-        if (result.success
+        if (result.success) {
+          window.location.href = 'login.html';
+        } else {
+          showToast("Error logging off");
+        }
+      } catch (error) {
+        console.error("Logout error:", error);
+        showToast("Error logging off");
+      }
+      showSpinner(false);
+    }
+  </script>
+  
+  <!-- Navigation for Sidebar Links -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const navLinks = document.querySelectorAll(".admin-sidebar ul li a");
+      const sections = document.querySelectorAll(".admin-section");
+      navLinks.forEach(link => {
+        link.addEventListener("click", function(e) {
+          const target = this.getAttribute("data-target");
+          if (target) {
+            e.preventDefault();
+            sections.forEach(section => {
+              section.classList.remove("active");
+              if (section.id === target) {
+                section.classList.add("active");
+              }
+            });
+          }
+        });
+      });
+      if (![...sections].some(s => s.classList.contains("active"))) {
+        sections[0].classList.add("active");
+      }
+    });
+  </script>
+</head>
+<body>
+  <!-- Spinner Overlay -->
+  <div class="spinner-overlay">
+    <div class="spinner"></div>
+  </div>
+  
+  <!-- Toast Notification -->
+  <div id="toast"></div>
+  
+  <!-- Modal Overlay -->
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal">
+      <p id="modal-message"></p>
+      <button id="modal-confirm" class="btn save-btn">Confirm</button>
+      <button id="modal-cancel" class="btn logoff-btn">Cancel</button>
+    </div>
+  </div>
+  
+  <div class="admin-sidebar">
+    <h2 style="cursor:pointer;" onclick="window.location.reload();">
+      Admin Dashboard
+    </h2>
+    <ul>
+      <li class="dropdown">
+        <a href="javascript:void(0)" class="dropdown-toggle" onclick="toggleDropdown()">
+          Student List <span class="arrow">&#9662;</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="#" onclick="setStudentGrade('Nursery')">Nursery</a></li>
+          <li><a href="#" onclick="setStudentGrade('Primary 1')">Primary 1</a></li>
+          <li><a href="#" onclick="setStudentGrade('Primary 2')">Primary 2</a></li>
+          <li><a href="#" onclick="setStudentGrade('Primary 3')">Primary 3</a></li>
+          <li><a href="#" onclick="setStudentGrade('Primary 4')">Primary 4</a></li>
+          <li><a href="#" onclick="setStudentGrade('Primary 5')">Primary 5</a></li>
+          <li><a href="#" onclick="setStudentGrade('Primary 6')">Primary 6</a></li>
+        </ul>
+      </li>
+      <li><a href="#" data-target="admissions-management">Admissions</a></li>
+      <li><a href="#" data-target="content-management">Content</a></li>
+      <li><a href="#" data-target="payments-management">Payments</a></li>
+      <li><a href="#" data-target="analytics">Analytics</a></li>
+      <li><a href="#" data-target="user-management">User Management</a></li>
+    </ul>
+  </div>
+  
+  <div class="admin-main">
+    <header class="admin-header">
+      <h1>Administration Panel</h1>
+      <button class="logoff-btn" onclick="logout()" title="Click to log off">Log Off</button>
+    </header>
+
+    <!-- Student List Panel -->
+    <section id="student-list" class="admin-section active">
+      <h2>Student List</h2>
+      <p id="selected-grade-label">Selected Grade: <span id="current-grade-display">None</span></p>
+      <div id="student-tables-container">
+        <!-- Dynamic tables will be inserted here for each grade -->
+      </div>
+      <button class="btn add-row-btn" onclick="addStudentRowForCurrentGrade()" title="Add a new row">Add Row</button>
+      <button class="btn save-btn" onclick="downloadStudentTableDataForCurrentGrade()" title="Download CSV for current grade">Download CSV</button>
+      <button class="btn save-btn" onclick="updateStudentTableForCurrentGrade()" title="Save changes">Save</button>
+      <button class="btn save-btn" onclick="downloadAllStudentData()" title="Download all student data">Download All Student Data</button>
+    </section>
+
+    <!-- Admissions Management Panel -->
+    <section id="admissions-management" class="admin-section">
+      <h2>Admissions Management</h2>
+      <p>Review and process admission applications here.</p>
+      <table id="admissions-table">
+        <thead>
+          <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Grade</th>
+            <th>Message</th>
+            <th>Submitted At</th>
+          </tr>
+        </thead>
+        <tbody id="admissions-table-body">
+          <!-- Admissions data will be inserted here -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Content Management Panel -->
+    <section id="content-management" class="admin-section">
+      <h2>Content Management</h2>
+      <p>Edit website content such as text and images.</p>
+    </section>
+
+    <!-- Payments Management Panel -->
+    <section id="payments-management" class="admin-section">
+      <h2>Payments Management</h2>
+      <p>View and manage tuition payment transactions.</p>
+    </section>
+
+    <!-- Analytics Panel -->
+    <section id="analytics" class="admin-section">
+      <h2>Site Analytics</h2>
+      <p>Overview of visitor statistics and website performance metrics.</p>
+    </section>
+
+    <!-- User Management Panel -->
+    <section id="user-management" class="admin-section">
+      <h2>User Management</h2>
+      <p>Manage administrator and teacher accounts.</p>
+    </section>
+  </div>
+</body>
+</html>
