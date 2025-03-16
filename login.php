@@ -6,7 +6,7 @@ session_set_cookie_params([
     'domain'   => '.crystalenaps.com', // Note the leading dot
     'secure'   => true,            // Ensure the cookie is only sent over HTTPS
     'httponly' => true,            // Prevent JavaScript access for security
-    'samesite' => 'Lax'            // Adjust as needed (None, Lax, or Strict)
+    'samesite' => 'None'            // Adjust as needed (None, Lax, or Strict)
 ]);
 
 // Set CORS headers for cross-origin requests with credentials
