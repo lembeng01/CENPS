@@ -1,4 +1,10 @@
 <?php
+// Set CORS headers for cross-origin requests with credentials
+header("Access-Control-Allow-Origin: https://crystalenaps.com"); // Replace with your actual frontend domain
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+
 session_start();
 header('Content-Type: application/json');
 
