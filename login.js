@@ -16,7 +16,8 @@ async function login(e) {
   try {
     const response = await fetch('https://api.crystalenaps.com/login.php', {
       method: 'POST',
-      body: formData
+      body: formData,
+      credentials: 'include'  // Ensure cookies are sent with the request
     });
     
     console.log("Response received:", response);
