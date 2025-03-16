@@ -1,4 +1,10 @@
 <?php
+// Set CORS headers for cross-origin requests with credentials
+header("Access-Control-Allow-Origin: https://crystalenaps.com"); // Replace with your actual frontend domain
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+
 header('Content-Type: application/json');
 
 // Only allow POST requests.
@@ -31,8 +37,8 @@ foreach ($requiredFields as $field) {
 // Database configuration – update these with your own settings.
 $host    = 'localhost';
 $db      = 'my_database';      // Change to your database name.
-$user    = 'admin';      // Change to your database user.
-$pass    = 'test';      // Change to your database password.
+$user    = 'admin';            // Change to your database user.
+$pass    = 'test';             // Change to your database password.
 $charset = 'utf8mb4';
 
 // Set up the DSN and options for PDO.
