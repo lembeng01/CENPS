@@ -1,4 +1,15 @@
 <?php
+
+// Set session cookie parameters so that the session cookie is available across subdomains
+session_set_cookie_params([
+    'lifetime' => 0,               // Session cookie expires when the browser closes
+    'path'     => '/',             // Available across the entire domain
+    'domain'   => '.crystalenaps.com', // Note the leading dot
+    'secure'   => true,            // Ensure the cookie is only sent over HTTPS
+    'httponly' => true,            // Prevent JavaScript access for security
+    'samesite' => 'None'            // Adjust as needed (None, Lax, or Strict)
+]);
+
 // Set CORS headers for cross-origin requests with credentials
 header("Access-Control-Allow-Origin: https://crystalenaps.com"); // Replace with your actual frontend domain
 header("Access-Control-Allow-Credentials: true");
