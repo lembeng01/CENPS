@@ -15,8 +15,8 @@ header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
-// Handle preflight OPTIONS request
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    // Handle preflight OPTIONS request
     header("HTTP/1.1 200 OK");
     exit;
 }
@@ -56,14 +56,14 @@ $dbPass = "test";
 try {
     $pdo = new PDO($dsn, $dbUser, $dbPass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-    // Begin a transaction so that if any error occurs we can roll back all changes.
+
+    // Begin a transaction
     $pdo->beginTransaction();
-    
+
     // Loop through each student record in the input array
     foreach ($students as $student) {
         try {
-            // If the record has an ID, update the record; otherwise, insert a new one.
+            // If the record has an ID, update the record; otherwise, insert a new one
             if (isset($student['id']) && !empty($student['id'])) {
                 $stmt = $pdo->prepare(
                     "UPDATE students 
@@ -78,7 +78,6 @@ try {
                     ":id"           => $student['id']
                 ]);
             } else {
-                // New record insertion.
                 $stmt = $pdo->prepare(
                     "INSERT INTO students (student_name, grade, email, phone) 
                      VALUES (:student_name, :grade, :email, :phone)"
@@ -91,14 +90,13 @@ try {
                 ]);
             }
         } catch (PDOException $e) {
-            // Check if the error is due to a duplicate entry.
+            // Check if the error is due to a duplicate entry (SQLSTATE 23000)
             if ($e->getCode() == 23000) {
-                // Roll back the entire transaction if a duplicate is found.
                 $pdo->rollBack();
                 http_response_code(400);
                 echo json_encode([
                     "success" => false, 
-                    "message" => "Duplicate student name for grade " . $student['grade'] . " detected. Record not saved."
+                    "message" => "Duplicate student name for grade {$student['grade']} detected. Record not saved."
                 ]);
                 exit;
             } else {
