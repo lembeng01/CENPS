@@ -32,7 +32,7 @@ async function login(e) {
     console.log("Result from login.php:", result);
     
     if (result.success) {
-      window.location.href = "admin.html";
+      window.location.href = "admin.php";
     } else {
       alert("Login failed: " + result.message);
     }
