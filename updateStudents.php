@@ -1,5 +1,4 @@
 <?php
-
 // Set session cookie parameters so that the session cookie is available across subdomains
 session_set_cookie_params([
     'lifetime' => 0,               // Session cookie expires when the browser closes
@@ -7,7 +6,7 @@ session_set_cookie_params([
     'domain'   => '.crystalenaps.com', // Note the leading dot
     'secure'   => true,            // Ensure the cookie is only sent over HTTPS
     'httponly' => true,            // Prevent JavaScript access for security
-    'samesite' => 'None'            // Adjust as needed (None, Lax, or Strict)
+    'samesite' => 'None'           // Adjust as needed (None, Lax, or Strict)
 ]);
 
 // Set CORS headers for cross-origin requests with credentials
@@ -15,6 +14,12 @@ header("Access-Control-Allow-Origin: https://crystalenaps.com"); // Replace with
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    // If this is a preflight request, respond with a 200 OK status and exit.
+    header("HTTP/1.1 200 OK");
+    exit;
+}
 
 session_start();
 header('Content-Type: application/json');
