@@ -15,8 +15,8 @@ header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
+// Handle preflight OPTIONS request
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    // If this is a preflight request, respond with a 200 OK status and exit.
     header("HTTP/1.1 200 OK");
     exit;
 }
@@ -56,37 +56,64 @@ $dbPass = "test";
 try {
     $pdo = new PDO($dsn, $dbUser, $dbPass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+    
+    // Begin a transaction so that if any error occurs we can roll back all changes.
+    $pdo->beginTransaction();
+    
     // Loop through each student record in the input array
     foreach ($students as $student) {
-        // If the record has an ID, update the record; otherwise, insert a new one
-        if (isset($student['id']) && !empty($student['id'])) {
-            $stmt = $pdo->prepare(
-                "UPDATE students 
-                 SET student_name = :student_name, grade = :grade, email = :email, phone = :phone 
-                 WHERE id = :id"
-            );
-            $stmt->execute([
-                ":student_name" => $student['student_name'],
-                ":grade"        => $student['grade'],
-                ":email"        => $student['email'],
-                ":phone"        => $student['phone'],
-                ":id"           => $student['id']
-            ]);
-        } else {
-            $stmt = $pdo->prepare(
-                "INSERT INTO students (student_name, grade, email, phone) 
-                 VALUES (:student_name, :grade, :email, :phone)"
-            );
-            $stmt->execute([
-                ":student_name" => $student['student_name'],
-                ":grade"        => $student['grade'],
-                ":email"        => $student['email'],
-                ":phone"        => $student['phone']
-            ]);
+        try {
+            // If the record has an ID, update the record; otherwise, insert a new one.
+            if (isset($student['id']) && !empty($student['id'])) {
+                $stmt = $pdo->prepare(
+                    "UPDATE students 
+                     SET student_name = :student_name, grade = :grade, email = :email, phone = :phone 
+                     WHERE id = :id"
+                );
+                $stmt->execute([
+                    ":student_name" => $student['student_name'],
+                    ":grade"        => $student['grade'],
+                    ":email"        => $student['email'],
+                    ":phone"        => $student['phone'],
+                    ":id"           => $student['id']
+                ]);
+            } else {
+                // New record insertion.
+                $stmt = $pdo->prepare(
+                    "INSERT INTO students (student_name, grade, email, phone) 
+                     VALUES (:student_name, :grade, :email, :phone)"
+                );
+                $stmt->execute([
+                    ":student_name" => $student['student_name'],
+                    ":grade"        => $student['grade'],
+                    ":email"        => $student['email'],
+                    ":phone"        => $student['phone']
+                ]);
+            }
+        } catch (PDOException $e) {
+            // Check if the error is due to a duplicate entry.
+            if ($e->getCode() == 23000) {
+                // Roll back the entire transaction if a duplicate is found.
+                $pdo->rollBack();
+                http_response_code(400);
+                echo json_encode([
+                    "success" => false, 
+                    "message" => "Duplicate student name for grade " . $student['grade'] . " detected. Record not saved."
+                ]);
+                exit;
+            } else {
+                $pdo->rollBack();
+                http_response_code(500);
+                echo json_encode(["success" => false, "message" => $e->getMessage()]);
+                exit;
+            }
         }
     }
+    
+    // If all operations succeed, commit the transaction.
+    $pdo->commit();
     echo json_encode(["success" => true, "message" => "Student data updated successfully"]);
+    
 } catch (PDOException $e) {
     http_response_code(500);
     echo json_encode(["success" => false, "message" => $e->getMessage()]);
