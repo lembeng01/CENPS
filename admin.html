@@ -655,6 +655,15 @@
       }
     });
   </script>
+  
+  <!-- Force Page Reload When Loaded from Cache -->
+  <script>
+    window.onpageshow = function(event) {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    };
+  </script>
 </head>
 <body>
   <!-- Spinner Overlay -->
@@ -675,14 +684,10 @@
   </div>
   
   <div class="admin-sidebar">
-    <h2 style="cursor:pointer;" onclick="window.location.reload();">
-      Admin Dashboard
-    </h2>
+    <h2 style="cursor:pointer;" onclick="window.location.reload();">Admin Dashboard</h2>
     <ul>
       <li class="dropdown">
-        <a href="javascript:void(0)" class="dropdown-toggle" onclick="toggleDropdown()">
-          Student List <span class="arrow">&#9662;</span>
-        </a>
+        <a href="javascript:void(0)" class="dropdown-toggle" onclick="toggleDropdown()">Student List <span class="arrow">&#9662;</span></a>
         <ul class="dropdown-menu">
           <li><a href="#" onclick="setStudentGrade('Nursery')">Nursery</a></li>
           <li><a href="#" onclick="setStudentGrade('Primary 1')">Primary 1</a></li>
