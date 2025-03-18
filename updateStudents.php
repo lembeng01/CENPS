@@ -113,7 +113,18 @@ try {
     
     // If all operations succeed, commit the transaction.
     $pdo->commit();
-    echo json_encode(["success" => true, "message" => "Student data updated successfully"]);
+    
+    // Fetch the updated list of students for the given grade
+    $stmt = $pdo->prepare("SELECT * FROM students WHERE grade = :grade");
+    $stmt->execute([':grade' => $grade]);
+    $updatedStudents = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Return the updated list along with a success message
+    echo json_encode([
+        "success" => true, 
+        "message" => "Student data updated successfully",
+        "students" => $updatedStudents
+    ]);
     
 } catch (PDOException $e) {
     http_response_code(500);
