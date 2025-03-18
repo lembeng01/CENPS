@@ -47,7 +47,7 @@ if (!$input || !isset($input['students']) || !isset($input['grade'])) {
 }
 
 $students = $input['students'];
-$grade = $input['grade'];
+$grade = $input['grade']; // Top-level grade value
 
 $dsn = "mysql:host=localhost;dbname=my_database;charset=utf8mb4";
 $dbUser = "admin";
@@ -62,6 +62,9 @@ try {
 
     // Loop through each student record in the input array
     foreach ($students as $student) {
+        // Optional: enforce that all student records use the top-level grade
+        $student['grade'] = $grade;
+
         try {
             // If the record has an ID, update the record; otherwise, insert a new one
             if (isset($student['id']) && !empty($student['id'])) {
