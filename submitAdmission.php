@@ -1,10 +1,18 @@
 <?php
-// Set session cookie parameters using legacy syntax (without 'samesite' attribute)
-session_set_cookie_params(0, '/', '.crystalenaps.com', true, true);
-session_start();
+// Optional: Start session if needed
+// session_set_cookie_params(0, '/', '.crystalenaps.com', true, true);
+// session_start();
 
-// Set CORS headers for cross-origin requests with credentials
-header("Access-Control-Allow-Origin: https://crystalenaps.com"); // Replace with your actual frontend domain
+// Dynamic CORS header example (adjust as necessary)
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+    $allowed_origins = ['https://crystalenaps.com', 'https://www.crystalenaps.com'];
+    if (in_array($_SERVER['HTTP_ORIGIN'], $allowed_origins)) {
+        header("Access-Control-Allow-Origin: " . $_SERVER['HTTP_ORIGIN']);
+    }
+} else {
+    header("Access-Control-Allow-Origin: https://crystalenaps.com");
+}
+
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
@@ -43,7 +51,14 @@ foreach ($requiredFields as $field) {
     }
 }
 
-// Database configuration – update these with your own settings.
+// Additional validation for email (if applicable)
+if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Invalid email address.']);
+    exit;
+}
+
+// Database configuration – ideally retrieve these from a secure config or environment variables.
 $host    = 'localhost';
 $db      = 'my_database';      // Change to your database name.
 $user    = 'admin';            // Change to your database user.
@@ -62,7 +77,8 @@ try {
     $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (PDOException $e) {
     http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Database connection failed: ' . $e->getMessage()]);
+    error_log('Database connection failed: ' . $e->getMessage());
+    echo json_encode(['success' => false, 'message' => 'Database connection failed.']);
     exit;
 }
 
@@ -83,7 +99,8 @@ try {
     echo json_encode(['success' => true, 'message' => 'Admission submitted successfully.']);
 } catch (PDOException $e) {
     http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+    error_log('Database error: ' . $e->getMessage());
+    echo json_encode(['success' => false, 'message' => 'A database error occurred.']);
     exit;
 }
 ?>
