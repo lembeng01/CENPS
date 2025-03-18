@@ -47,7 +47,22 @@ if (!$input || !isset($input['students']) || !isset($input['grade'])) {
 }
 
 $students = $input['students'];
-$grade = $input['grade']; // Top-level grade value
+$grade = $input['grade'];
+
+// Pre-check for duplicate student names (case-insensitive) within the same grade
+$studentNames = [];
+foreach ($students as $student) {
+    $name = strtolower(trim($student['student_name']));
+    if (isset($studentNames[$name])) {
+        http_response_code(400);
+        echo json_encode([
+            "success" => false, 
+            "message" => "Duplicate student name '{$student['student_name']}' detected in grade {$grade}."
+        ]);
+        exit;
+    }
+    $studentNames[$name] = true;
+}
 
 $dsn = "mysql:host=localhost;dbname=my_database;charset=utf8mb4";
 $dbUser = "admin";
@@ -56,15 +71,15 @@ $dbPass = "test";
 try {
     $pdo = new PDO($dsn, $dbUser, $dbPass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+    
     // Begin a transaction
     $pdo->beginTransaction();
 
     // Loop through each student record in the input array
     foreach ($students as $student) {
-        // Optional: enforce that all student records use the top-level grade
+        // Ensure the student's grade is set to the top-level grade value
         $student['grade'] = $grade;
-
+        
         try {
             // If the record has an ID, update the record; otherwise, insert a new one
             if (isset($student['id']) && !empty($student['id'])) {
@@ -111,15 +126,14 @@ try {
         }
     }
     
-    // If all operations succeed, commit the transaction.
+    // Commit the transaction if all operations succeed.
     $pdo->commit();
     
-    // Fetch the updated list of students for the given grade
+    // Optionally, fetch the updated list of students for the given grade to refresh the UI
     $stmt = $pdo->prepare("SELECT * FROM students WHERE grade = :grade");
     $stmt->execute([':grade' => $grade]);
     $updatedStudents = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    // Return the updated list along with a success message
     echo json_encode([
         "success" => true, 
         "message" => "Student data updated successfully",
