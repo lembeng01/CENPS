@@ -4,11 +4,291 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title data-translate="page_title">Crystal English Nursery & Primary School | About Us</title>
+  
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- Animate.css for animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  
+  <!-- AOS for scroll animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+
   <link rel="stylesheet" href="styles.css" />
   <!-- Shared JS (Supabase removed) -->
   <script defer src="script.js"></script>
+
+  <style>
+    /* Basic Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      line-height: 1.6;
+      background: #f4f4f4;
+      color: #333;
+    }
+
+    /* Language Toggle Button */
+    .language-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #fff;
+      border: 2px solid #003366;
+      border-radius: 50px;
+      padding: 10px 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: background 0.3s, transform 0.3s;
+      z-index: 1000;
+    }
+    .language-toggle:hover {
+      background: #003366;
+      color: #fff;
+      transform: scale(1.05);
+    }
+    .language-toggle img {
+      width: 24px;
+      height: auto;
+      margin-right: 10px;
+    }
+
+    /* Navigation */
+    nav {
+      background: #003366;
+      padding: 10px 0;
+    }
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+    }
+    nav ul li {
+      margin: 0 15px;
+    }
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      transition: color 0.3s, transform 0.3s;
+    }
+    nav ul li a:hover, nav ul li a.active {
+      color: #ffcc00;
+      transform: scale(1.1);
+    }
+
+    /* Page Header with Parallax Background */
+    .page-header {
+      position: relative;
+      height: 300px;
+      background: url('school_header.jpg') no-repeat center center/cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #fff;
+      overflow: hidden;
+    }
+    .page-header::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+    }
+    .page-header h1, .page-header p {
+      position: relative;
+      z-index: 2;
+    }
+    .page-header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      animation: fadeInDown 1s;
+    }
+    .page-header p {
+      font-size: 1.2rem;
+      animation: fadeInUp 1s;
+    }
+
+    /* About Content */
+    .content.container {
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .content.container p {
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+    }
+    .clearfix {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      margin: 20px 0;
+    }
+    .clearfix img {
+      flex: 1;
+      max-width: 45%;
+      border-radius: 10px;
+      margin-right: 20px;
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+    .clearfix img:hover {
+      transform: scale(1.05);
+    }
+    .clearfix p {
+      flex: 1;
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+
+    /* Interactive Timeline */
+    .timeline {
+      position: relative;
+      margin: 40px 0;
+      padding: 20px 0;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 100%;
+      background: #003366;
+    }
+    .timeline-event {
+      position: relative;
+      width: 45%;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .timeline-event:nth-child(odd) {
+      left: 0;
+      margin-right: auto;
+    }
+    .timeline-event:nth-child(even) {
+      left: 55%;
+      margin-left: auto;
+    }
+    .timeline-event h3 {
+      margin-bottom: 10px;
+      color: #003366;
+    }
+    .timeline-event p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .timeline-event::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      width: 12px;
+      height: 12px;
+      background: #ffcc00;
+      border-radius: 50%;
+      z-index: 2;
+    }
+    .timeline-event:nth-child(odd)::before {
+      right: -6px;
+    }
+    .timeline-event:nth-child(even)::before {
+      left: -6px;
+    }
+
+    /* Footer */
+    footer {
+      background: #003366;
+      color: #fff;
+      padding: 20px 0;
+    }
+    footer .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .footer-contact {
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    footer a {
+      color: #ffcc00;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+    #footer-text {
+      font-size: 0.9rem;
+    }
+
+    /* Scroll-to-Top Button */
+    #scrollToTopBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #003366;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      padding: 10px 15px;
+      cursor: pointer;
+      display: none;
+      font-size: 1.2rem;
+      z-index: 1000;
+      transition: opacity 0.3s;
+    }
+    #scrollToTopBtn:hover {
+      background: #ffcc00;
+      color: #003366;
+    }
+
+    /* Media Queries */
+    @media (max-width: 768px) {
+      .clearfix {
+        flex-direction: column;
+      }
+      .clearfix img, .clearfix p {
+        max-width: 100%;
+        margin: 0;
+      }
+      .timeline::before {
+        left: 10px;
+      }
+      .timeline-event {
+        width: 90%;
+        margin-left: 20px;
+      }
+      .timeline-event:nth-child(even) {
+        left: 20px;
+      }
+    }
+
+    /* Keyframes for header animations */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
   <!-- Language Toggle -->
@@ -32,25 +312,48 @@
 
   <!-- Page Header -->
   <header class="page-header">
-    <h1 data-translate="about_heading">About Crystal English School</h1>
-    <p data-translate="about_subheading">Our Mission, Vision, and Values</p>
+    <h1 data-translate="about_heading" class="animate__animated animate__fadeInDown">About Crystal English School</h1>
+    <p data-translate="about_subheading" class="animate__animated animate__fadeInUp">Our Mission, Vision, and Values</p>
   </header>
 
   <!-- About Content -->
   <section class="content container">
-    <p data-translate="about_text1">
+    <p data-translate="about_text1" data-aos="fade-up">
       Established in September 2007 by a group of visionary educators, our school has grown into a beacon of quality education. We provide a holistic curriculum that nurtures academic excellence, creativity, and character development.
     </p>
-    <p data-translate="about_text2">
+    <p data-translate="about_text2" data-aos="fade-up" data-aos-delay="200">
       Our dedicated team of teachers and staff are committed to creating a safe, inclusive, and stimulating environment that empowers students to excel and become future leaders.
     </p>
-    <div class="clearfix">
+    <div class="clearfix" data-aos="fade-up" data-aos-delay="400">
       <img src="classroom.jpg" alt="Classroom" class="responsive-img float-img" />
       <p data-translate="about_text3">
         Our modern classrooms are designed to promote creativity and collaboration. Students have access to innovative learning tools and resources that enhance their educational experience.
       </p>
     </div>
+    
+    <!-- Interactive Timeline -->
+    <section class="timeline" data-aos="fade-up" data-aos-delay="600">
+      <div class="timeline-event">
+        <h3>2007</h3>
+        <p>Our founding year, when the vision for a transformative learning experience began.</p>
+      </div>
+      <div class="timeline-event">
+        <h3>2010</h3>
+        <p>Expansion of our curriculum and introduction of new educational technologies.</p>
+      </div>
+      <div class="timeline-event">
+        <h3>2015</h3>
+        <p>Launch of innovative programs that integrated creative arts and sciences.</p>
+      </div>
+      <div class="timeline-event">
+        <h3>2020</h3>
+        <p>Adoption of digital learning platforms to enhance remote education.</p>
+      </div>
+    </section>
   </section>
+
+  <!-- Scroll-to-Top Button -->
+  <button id="scrollToTopBtn" title="Go to top">↑</button>
 
   <!-- Footer with Contact Us -->
   <footer>
@@ -69,5 +372,28 @@
       </p>
     </div>
   </footer>
+
+  <!-- AOS Scroll Animation JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      once: true
+    });
+
+    // Scroll to Top Button Functionality
+    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        scrollToTopBtn.style.display = 'block';
+      } else {
+        scrollToTopBtn.style.display = 'none';
+      }
+    });
+
+    scrollToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
 </body>
 </html>
