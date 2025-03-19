@@ -4,9 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Login</title>
+  
+  <!-- Prevent caching -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
   <link rel="stylesheet" href="styles.css" />
   <!-- Remove the inline script that contains login() and load login.js instead -->
   <script defer src="login.js"></script>
+  
   <style>
     /* Your login page styles */
     body {
@@ -50,12 +57,23 @@
       cursor: pointer;
     }
   </style>
+
+  <!-- Optional: Clear sensitive fields on page load if restored from cache -->
+  <script>
+    window.addEventListener("pageshow", function(event) {
+      if (event.persisted) {
+        // If the page is loaded from cache, reload to ensure fresh state
+        window.location.reload();
+      }
+    });
+  </script>
 </head>
 <body>
   <form id="loginForm" autocomplete="off">
     <h2>Admin Login</h2>
     <input type="text" id="username" name="username" placeholder="Username" autocomplete="username" required />
-    <input type="password" id="password" name="password" placeholder="Password" autocomplete="current-password" required />
+    <!-- Using "new-password" can discourage browsers from autofilling the field -->
+    <input type="password" id="password" name="password" placeholder="Password" autocomplete="new-password" required />
     <button type="submit">Login</button>
   </form>
 </body>
