@@ -120,6 +120,32 @@
       animation: fadeInUp 1s;
     }
 
+    /* Full Screen Floating Image Section on About Page */
+    .full-screen-image-section {
+      position: relative;
+      height: 100vh; /* Full viewport height */
+      overflow: hidden;
+    }
+    .full-screen-float {
+      width: 100%;
+      height: 100vh;
+      object-fit: cover;
+      animation: float 6s ease-in-out infinite;
+      display: block;
+    }
+    .full-screen-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      max-width: 90%;
+    }
+
     /* About Content */
     .content.container {
       padding: 40px 20px;
@@ -288,6 +314,16 @@
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    /* Keyframes for floating animation */
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
   </style>
 </head>
 <body>
@@ -316,6 +352,16 @@
     <p data-translate="about_subheading" class="animate__animated animate__fadeInUp">Our Mission, Vision, and Values</p>
   </header>
 
+  <!-- Full Screen Floating Image Section on About Page -->
+  <section class="full-screen-image-section" data-aos="fade-up">
+    <img src="classroom.jpg" alt="Classroom" class="full-screen-float" />
+    <div class="full-screen-overlay">
+      <p data-translate="about_text3">
+        Our modern classrooms are designed to promote creativity and collaboration. Students have access to innovative learning tools and resources that enhance their educational experience.
+      </p>
+    </div>
+  </section>
+
   <!-- About Content -->
   <section class="content container">
     <p data-translate="about_text1" data-aos="fade-up">
@@ -324,15 +370,9 @@
     <p data-translate="about_text2" data-aos="fade-up" data-aos-delay="200">
       Our dedicated team of teachers and staff are committed to creating a safe, inclusive, and stimulating environment that empowers students to excel and become future leaders.
     </p>
-    <div class="clearfix" data-aos="fade-up" data-aos-delay="400">
-      <img src="classroom.jpg" alt="Classroom" class="responsive-img float-img" />
-      <p data-translate="about_text3">
-        Our modern classrooms are designed to promote creativity and collaboration. Students have access to innovative learning tools and resources that enhance their educational experience.
-      </p>
-    </div>
     
     <!-- Interactive Timeline -->
-    <section class="timeline" data-aos="fade-up" data-aos-delay="600">
+    <section class="timeline" data-aos="fade-up" data-aos-delay="400">
       <div class="timeline-event">
         <h3>2007</h3>
         <p>Our founding year, when the vision for a transformative learning experience began.</p>
