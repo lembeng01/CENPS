@@ -1,4 +1,10 @@
 <?php
+// Prevent browser caching
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Expires: 0");
+
 // Set session cookie parameters so that the session cookie is available across subdomains
 session_set_cookie_params([
     'lifetime' => 0,               // Session cookie expires when the browser closes
@@ -6,7 +12,7 @@ session_set_cookie_params([
     'domain'   => '.crystalenaps.com', // Note the leading dot
     'secure'   => true,            // Ensure the cookie is only sent over HTTPS
     'httponly' => true,            // Prevent JavaScript access for security
-    'samesite' => 'None'            // Adjust as needed (None, Lax, or Strict)
+    'samesite' => 'None'           // Adjust as needed (None, Lax, or Strict)
 ]);
 
 // Set CORS headers for cross-origin requests with credentials
