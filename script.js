@@ -323,3 +323,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+// Show/hide the scroll-to-top button based on scroll position
+window.addEventListener('scroll', function() {
+  const scrollToTopButton = document.getElementById('scrollToTop');
+  if (window.pageYOffset > 300) {
+    scrollToTopButton.style.display = 'block';
+  } else {
+    scrollToTopButton.style.display = 'none';
+  }
+});
+
+// Smoothly scroll to the top when the button is clicked
+document.getElementById('scrollToTop').addEventListener('click', function() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
