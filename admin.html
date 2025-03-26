@@ -687,6 +687,10 @@
                 section.classList.add("active");
               }
             });
+            // Automatically hide the sidebar on mobile after clicking a link
+            if (window.innerWidth <= 600) {
+              document.querySelector(".admin-sidebar").classList.remove("active");
+            }
           }
         });
       });
