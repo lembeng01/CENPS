@@ -259,6 +259,19 @@
     .modal button {
       margin: 10px;
     }
+    /* Responsive Table Container */
+    .table-responsive {
+      overflow-x: auto;
+      width: 100%;
+    }
+    /* Media Query for Admissions Table on Smaller Screens */
+    @media screen and (max-width: 600px) {
+      #admissions-table th,
+      #admissions-table td {
+        padding: 5px;
+        font-size: 12px;
+      }
+    }
   </style>
   
   <!-- Custom JavaScript (No Supabase) -->
@@ -729,21 +742,23 @@
     <section id="admissions-management" class="admin-section">
       <h2>Admissions Management</h2>
       <p>Review and process admission applications here.</p>
-      <table id="admissions-table">
-        <thead>
-          <tr>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Grade</th>
-            <th>Message</th>
-            <th>Submitted At</th>
-          </tr>
-        </thead>
-        <tbody id="admissions-table-body">
-          <!-- Admissions data will be inserted here -->
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table id="admissions-table">
+          <thead>
+            <tr>
+              <th>Full Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Grade</th>
+              <th>Message</th>
+              <th>Submitted At</th>
+            </tr>
+          </thead>
+          <tbody id="admissions-table-body">
+            <!-- Admissions data will be inserted here -->
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <!-- Content Management Panel -->
