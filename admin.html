@@ -358,7 +358,7 @@
     // --- Visitor Count Functions ---
     async function getVisitorCount() {
       try {
-        const response = await fetch('incrementVisitor.php');
+        const response = await fetch(API_BASE_URL + 'incrementVisitor.php', { credentials: 'include' });
         const data = await response.json();
         if (data.success) {
           return data.count;
