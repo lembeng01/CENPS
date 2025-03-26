@@ -347,13 +347,41 @@
         analyticsSection.innerHTML += "<p>Performance metrics are not supported in this browser.</p>";
       }
       
-      // Visitor information
+      // Visitor information (will be supplemented by the visitor count function)
       let visitorStats = `<h3>Visitor Info</h3>`;
       visitorStats += `<p>User Agent: ${navigator.userAgent}</p>`;
       visitorStats += `<p>Screen Resolution: ${window.screen.width} x ${window.screen.height}</p>`;
       analyticsSection.innerHTML += visitorStats;
     }
     // --- End Site Analytics Function ---
+
+    // --- Visitor Count Functions ---
+    async function getVisitorCount() {
+      try {
+        const response = await fetch('incrementVisitor.php');
+        const data = await response.json();
+        if (data.success) {
+          return data.count;
+        } else {
+          console.error("Error: " + data.error);
+          return null;
+        }
+      } catch (e) {
+        console.error("Fetch error:", e);
+        return null;
+      }
+    }
+
+    async function displayVisitorCount() {
+      const count = await getVisitorCount();
+      const countElem = document.getElementById("visitor-count");
+      if (count !== null) {
+        countElem.innerText = `Total Visitors: ${count}`;
+      } else {
+        countElem.innerText = "Unable to retrieve visitor count.";
+      }
+    }
+    // --- End Visitor Count Functions ---
 
     // Load student data from the backend and update the UI
     async function loadStudentData() {
@@ -727,9 +755,10 @@
                 section.classList.add("active");
               }
             });
-            // If the Analytics section is activated, display the metrics
+            // If the Analytics section is activated, display metrics and visitor count
             if (target === "analytics") {
               displaySiteAnalytics();
+              displayVisitorCount();
             }
             // Automatically hide the sidebar on mobile after clicking a link
             if (window.innerWidth <= 600) {
@@ -853,9 +882,8 @@
 
     <!-- Analytics Panel -->
     <section id="analytics" class="admin-section">
-      <!-- The displaySiteAnalytics() function will populate this section -->
       <h2>Site Analytics</h2>
-      <p>Overview of visitor statistics and website performance metrics.</p>
+      <p id="visitor-count">Loading visitor count...</p>
     </section>
 
     <!-- User Management Panel -->
