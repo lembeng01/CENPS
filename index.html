@@ -89,5 +89,19 @@
     </div>
   </footer>
   <button id="scrollToTop">Top</button>
+  
+  <!-- Script to Increment Visitor Count on the Homepage -->
+  <script>
+    document.addEventListener("DOMContentLoaded", async function() {
+      try {
+        // Call the incrementVisitor.php endpoint with a query parameter to indicate it's coming from index.html
+        const response = await fetch("https://api.crystalenaps.com/incrementVisitor.php?page=index", { credentials: 'include' });
+        const data = await response.json();
+        console.log("Visitor count updated:", data);
+      } catch (e) {
+        console.error("Error incrementing visitor count:", e);
+      }
+    });
+  </script>
 </body>
 </html>
