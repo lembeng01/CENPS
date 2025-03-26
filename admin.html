@@ -321,8 +321,8 @@
     // --- Site Analytics Function ---
     function displaySiteAnalytics() {
       const analyticsSection = document.getElementById("analytics");
-      // Clear existing content and add a header
-      analyticsSection.innerHTML = '<h2>Site Analytics</h2>';
+      // Set header and include a visitor count placeholder
+      analyticsSection.innerHTML = '<h2>Site Analytics</h2><p id="visitor-count">Loading visitor count...</p>';
       
       if (window.performance && window.performance.timing) {
         const timing = window.performance.timing;
@@ -347,7 +347,7 @@
         analyticsSection.innerHTML += "<p>Performance metrics are not supported in this browser.</p>";
       }
       
-      // Visitor information (will be supplemented by the visitor count function)
+      // Append additional visitor info
       let visitorStats = `<h3>Visitor Info</h3>`;
       visitorStats += `<p>User Agent: ${navigator.userAgent}</p>`;
       visitorStats += `<p>Screen Resolution: ${window.screen.width} x ${window.screen.height}</p>`;
@@ -375,10 +375,14 @@
     async function displayVisitorCount() {
       const count = await getVisitorCount();
       const countElem = document.getElementById("visitor-count");
-      if (count !== null) {
-        countElem.innerText = `Total Visitors: ${count}`;
+      if (countElem) {
+        if (count !== null) {
+          countElem.innerText = `Total Visitors: ${count}`;
+        } else {
+          countElem.innerText = "Unable to retrieve visitor count.";
+        }
       } else {
-        countElem.innerText = "Unable to retrieve visitor count.";
+        console.error("Visitor count element not found.");
       }
     }
     // --- End Visitor Count Functions ---
