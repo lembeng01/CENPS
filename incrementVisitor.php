@@ -2,7 +2,7 @@
 // incrementVisitor.php
 
 // Database connection settings – adjust these with your credentials
-$servername = "api.crystalenaps.com";
+$servername = "localhost";
 $username   = "admin";
 $password   = "test";
 $dbname     = "my_database";
