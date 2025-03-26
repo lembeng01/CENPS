@@ -47,27 +47,31 @@ try {
     exit;
 }
 
-try {
-    // Begin a transaction
-    $pdo->beginTransaction();
+// Check if the visitor has already been counted via a cookie
+if (!isset($_COOKIE['visitor_counted'])) {
+    try {
+        // Begin a transaction
+        $pdo->beginTransaction();
+        // Increment the visitor count (assuming a row with id = 1 exists)
+        $stmt = $pdo->prepare("UPDATE visitor_stats SET count = count + 1 WHERE id = 1");
+        $stmt->execute();
+        $pdo->commit();
 
-    // Increment the visitor count (assuming there's a row with id = 1)
-    $stmt = $pdo->prepare("UPDATE visitor_stats SET count = count + 1 WHERE id = 1");
-    $stmt->execute();
-
-    // Retrieve the updated count
-    $stmt = $pdo->prepare("SELECT count FROM visitor_stats WHERE id = 1");
-    $stmt->execute();
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $count = $row ? $row['count'] : 0;
-
-    // Commit the transaction
-    $pdo->commit();
-
-    echo json_encode(["success" => true, "count" => $count]);
-} catch (PDOException $e) {
-    $pdo->rollBack();
-    http_response_code(500);
-    echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
+        // Set a cookie to mark this visitor as counted for 30 days
+        setcookie('visitor_counted', '1', time() + (30 * 24 * 60 * 60), '/', '.crystalenaps.com', true, true);
+    } catch (PDOException $e) {
+        $pdo->rollBack();
+        http_response_code(500);
+        echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
+        exit;
+    }
 }
+
+// Retrieve the updated visitor count
+$stmt = $pdo->prepare("SELECT count FROM visitor_stats WHERE id = 1");
+$stmt->execute();
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+$count = $row ? $row['count'] : 0;
+
+echo json_encode(["success" => true, "count" => $count]);
 ?>
