@@ -301,9 +301,9 @@
     }
   </style>
   
-  <!-- Custom JavaScript (No Supabase) -->
+  <!-- Custom JavaScript -->
   <script>
-    // Set the API base URL to your subdomain (ensure this is HTTPS if your certificate is installed)
+    // Set the API base URL to your subdomain (ensure HTTPS if required)
     const API_BASE_URL = "https://api.crystalenaps.com/";
 
     // Check session by calling a custom PHP endpoint
@@ -317,7 +317,44 @@
         return { logged_in: false };
       }
     }
-    
+
+    // --- Site Analytics Function ---
+    function displaySiteAnalytics() {
+      const analyticsSection = document.getElementById("analytics");
+      // Clear existing content and add a header
+      analyticsSection.innerHTML = '<h2>Site Analytics</h2>';
+      
+      if (window.performance && window.performance.timing) {
+        const timing = window.performance.timing;
+        const metrics = {
+          "Page Load Time": timing.loadEventEnd - timing.navigationStart,
+          "DOM Content Loaded": timing.domContentLoadedEventEnd - timing.navigationStart,
+          "Redirect Time": timing.redirectEnd - timing.redirectStart,
+          "App Cache Time": timing.domainLookupStart - timing.fetchStart,
+          "DNS Lookup Time": timing.domainLookupEnd - timing.domainLookupStart,
+          "TCP Connect Time": timing.connectEnd - timing.connectStart,
+          "Request Time": timing.responseStart - timing.requestStart,
+          "Response Time": timing.responseEnd - timing.responseStart
+        };
+
+        let html = '<h3>Performance Metrics</h3><ul>';
+        for (let key in metrics) {
+          html += `<li>${key}: ${metrics[key]} ms</li>`;
+        }
+        html += '</ul>';
+        analyticsSection.innerHTML += html;
+      } else {
+        analyticsSection.innerHTML += "<p>Performance metrics are not supported in this browser.</p>";
+      }
+      
+      // Visitor information
+      let visitorStats = `<h3>Visitor Info</h3>`;
+      visitorStats += `<p>User Agent: ${navigator.userAgent}</p>`;
+      visitorStats += `<p>Screen Resolution: ${window.screen.width} x ${window.screen.height}</p>`;
+      analyticsSection.innerHTML += visitorStats;
+    }
+    // --- End Site Analytics Function ---
+
     // Load student data from the backend and update the UI
     async function loadStudentData() {
       try {
@@ -329,7 +366,6 @@
         const result = await response.json();
         if (result.success) {
           console.log("Student data loaded:", result.students);
-          
           // Group students by grade
           const studentsByGrade = {};
           result.students.forEach(student => {
@@ -338,12 +374,10 @@
             }
             studentsByGrade[student.grade].push(student);
           });
-          
           // Clear existing tables
           const container = document.getElementById("student-tables-container");
           container.innerHTML = "";
           studentTables = {}; // reset our global reference
-          
           // Create a table for each grade and populate with rows
           for (const grade in studentsByGrade) {
             const table = document.createElement("table");
@@ -669,6 +703,12 @@
       }
       showSpinner(false);
     }
+    
+    // Sidebar Toggle Function for Mobile
+    function toggleSidebar() {
+      const sidebar = document.querySelector('.admin-sidebar');
+      sidebar.classList.toggle('active');
+    }
   </script>
   
   <!-- Navigation for Sidebar Links -->
@@ -687,6 +727,10 @@
                 section.classList.add("active");
               }
             });
+            // If the Analytics section is activated, display the metrics
+            if (target === "analytics") {
+              displaySiteAnalytics();
+            }
             // Automatically hide the sidebar on mobile after clicking a link
             if (window.innerWidth <= 600) {
               document.querySelector(".admin-sidebar").classList.remove("active");
@@ -694,6 +738,7 @@
           }
         });
       });
+      // Default: activate the first section if none is active
       if (![...sections].some(s => s.classList.contains("active"))) {
         sections[0].classList.add("active");
       }
@@ -707,14 +752,6 @@
         window.location.reload();
       }
     };
-  </script>
-  
-  <!-- Sidebar Toggle Function for Mobile -->
-  <script>
-    function toggleSidebar() {
-      const sidebar = document.querySelector('.admin-sidebar');
-      sidebar.classList.toggle('active');
-    }
   </script>
 </head>
 <body>
@@ -816,6 +853,7 @@
 
     <!-- Analytics Panel -->
     <section id="analytics" class="admin-section">
+      <!-- The displaySiteAnalytics() function will populate this section -->
       <h2>Site Analytics</h2>
       <p>Overview of visitor statistics and website performance metrics.</p>
     </section>
