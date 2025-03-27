@@ -9,8 +9,8 @@ header("Expires: 0");
 session_set_cookie_params([
     'lifetime' => 0,               // Session cookie expires when the browser closes
     'path'     => '/',             // Available across the entire domain
-    'domain'   => '.crystalenaps.com', // Note the leading dot
-    'secure'   => true,            // Ensure the cookie is only sent over HTTPS
+    'domain'   => '.crystalenaps.com', // Note the leading dot for subdomain access
+    'secure'   => true,            // Only send the cookie over HTTPS
     'httponly' => true,            // Prevent JavaScript access for security
     'samesite' => 'None'           // Adjust as needed (None, Lax, or Strict)
 ]);
@@ -23,6 +23,24 @@ header("Access-Control-Allow-Headers: Content-Type");
 
 // Start session after setting cookie parameters
 session_start();
+
+// ----- Session Timeout Logic Start -----
+// Set the timeout duration to 5 minutes (300 seconds)
+$timeout_duration = 300;
+
+// Check if the last activity timestamp exists and if the session has expired
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $timeout_duration)) {
+    // Session has timed out: clear session data and destroy the session
+    session_unset();
+    session_destroy();
+    // Redirect to your login page (choose login.html or login.php based on your flow)
+    header("Location: login.html");
+    exit();
+}
+
+// Update the last activity timestamp
+$_SESSION['last_activity'] = time();
+// ----- Session Timeout Logic End -----
 
 // Set Content-Type header for JSON response
 header('Content-Type: application/json');
@@ -39,13 +57,13 @@ try {
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
 
-    // Use prepared statements to prevent SQL injection
+    // Use a prepared statement to prevent SQL injection
     $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username");
     $stmt->execute(['username' => $username]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($user && password_verify($password, $user['password'])) {
-        // Successful login: regenerate session and store user data
+        // Successful login: regenerate the session ID and store user data
         session_regenerate_id(true);
         $_SESSION['user'] = [
             'id'       => $user['id'],
