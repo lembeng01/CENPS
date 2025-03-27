@@ -45,8 +45,8 @@ if (!isset($_SESSION['user'])) {
 }
 
 $dsn = "mysql:host=localhost;dbname=my_database;charset=utf8mb4";
-$dbUser = "admin";
-$dbPass = "test"; // Replace with your actual raw password
+$dbUser = getenv('DB_USER');
+$dbPass = getenv('DB_PASS'); // Replace with your actual raw password
 
 try {
     $pdo = new PDO($dsn, $dbUser, $dbPass);
