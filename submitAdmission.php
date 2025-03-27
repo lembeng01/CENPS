@@ -61,8 +61,8 @@ if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
 // Database configuration – ideally retrieve these from a secure config or environment variables.
 $host    = 'localhost';
 $db      = 'my_database';      // Change to your database name.
-$user    = 'admin';            // Change to your database user.
-$pass    = 'test';             // Change to your database password.
+$user    = getenv('DB_USER');            // Change to your database user.
+$pass    = getenv('DB_PASS');             // Change to your database password.
 $charset = 'utf8mb4';
 
 // Set up the DSN and options for PDO.
