@@ -45,8 +45,8 @@ if (!isset($_SESSION['user'])) {
 }
 
 $dsn = "mysql:host=localhost;dbname=my_database;charset=utf8mb4";
-$dbUser = "admin";
-$dbPass = "test";
+$dbUser = getenv('DB_USER');
+$dbPass = getenv('DB_PASS');
 
 try {
     $pdo = new PDO($dsn, $dbUser, $dbPass);
