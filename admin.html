@@ -805,6 +805,14 @@
     </div>
   </div>
   
+  <!-- Session Timeout Overlay -->
+  <div id="session-timeout-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000;">
+    <div style="background: #fff; padding: 20px; border-radius: 5px; text-align: center;">
+      <p style="font-size: 1.2rem; margin-bottom: 20px;">Session timed out. Please sign in to continue your session.</p>
+      <button onclick="redirectToLogin()" style="padding: 10px 20px; font-size: 1rem;">Sign In</button>
+    </div>
+  </div>
+  
   <div class="admin-sidebar">
     <h2 style="cursor:pointer;" onclick="window.location.reload();">Admin Dashboard</h2>
     <ul>
@@ -896,5 +904,34 @@
       <p>Manage administrator and teacher accounts.</p>
     </section>
   </div>
+  
+  <!-- Inactivity Timer and Session Timeout Script -->
+  <script>
+    // Duration for inactivity: 5 minutes (300000 ms)
+    const timeoutDuration = 300000; 
+    let inactivityTimer;
+
+    // Reset the inactivity timer whenever user activity is detected
+    function resetInactivityTimer() {
+      if (inactivityTimer) clearTimeout(inactivityTimer);
+      inactivityTimer = setTimeout(() => {
+        // Display the session timeout overlay after inactivity expires
+        document.getElementById('session-timeout-overlay').style.display = 'flex';
+      }, timeoutDuration);
+    }
+
+    // Redirect the user to the login page
+    function redirectToLogin() {
+      window.location.href = "index.html"; // Adjust if your login page differs
+    }
+
+    // List of events to monitor user activity
+    ['mousemove', 'mousedown', 'keypress', 'touchmove'].forEach(event => {
+      document.addEventListener(event, resetInactivityTimer, false);
+    });
+
+    // Initialize the inactivity timer on page load
+    resetInactivityTimer();
+  </script>
 </body>
 </html>
