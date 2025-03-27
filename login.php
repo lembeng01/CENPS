@@ -46,8 +46,8 @@ $_SESSION['last_activity'] = time();
 header('Content-Type: application/json');
 
 $dsn = "mysql:host=localhost;dbname=my_database;charset=utf8mb4";
-$dbUser = "admin";
-$dbPass = "test"; // Ensure this is your actual DB password
+$dbUser = getenv('DB_USER');
+$dbPass = getenv('DB_PASS'); // Ensure this is your actual DB password
 
 try {
     $pdo = new PDO($dsn, $dbUser, $dbPass);
