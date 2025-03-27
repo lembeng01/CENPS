@@ -33,8 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 
 // Database connection settings – adjust these with your credentials
 $servername = "localhost";
-$dbUser     = "admin";
-$dbPass     = "test";
+$dbUser     = getenv('DB_USER');
+$dbPass     = getenv('DB_PASS');
 $dbname     = "my_database";
 
 try {
