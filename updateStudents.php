@@ -22,6 +22,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 session_start();
+
+// ----- Session Timeout Logic Start -----
+// Set the timeout duration to 5 minutes (300 seconds)
+$timeout_duration = 300;
+
+// Check if the last activity timestamp exists and if the session has expired
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $timeout_duration)) {
+    // Session has timed out: clear session data and destroy the session
+    session_unset();
+    session_destroy();
+    // Redirect to your login page (choose login.html or login.php based on your flow)
+    header("Location: login.html");
+    exit();
+}
+
+// Update the last activity timestamp
+$_SESSION['last_activity'] = time();
+// ----- Session Timeout Logic End -----
+
 header('Content-Type: application/json');
 
 // Only allow POST requests.
