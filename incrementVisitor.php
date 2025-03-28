@@ -33,8 +33,15 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 
 // Database connection settings – adjust these with your credentials
 $servername = "localhost";
-$dbUser     = getenv('DB_USER');
-$dbPass     = getenv('DB_PASS');
+// Load database credentials from external configuration file
+$configFile = 'C:/wamp64/config/db_config.ini';
+$config = parse_ini_file($configFile, true);
+if ($config === false) {
+    echo json_encode(["success" => false, "message" => "Failed to load configuration file"]);
+    exit();
+}
+$dbUser = $config['database']['user'];
+$dbPass = $config['database']['pass'];
 $dbname     = "my_database";
 
 try {
