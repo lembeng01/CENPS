@@ -81,7 +81,7 @@ header#home::after {
 .hero {
   position: relative;
   z-index: 1;
-  background: rgba(0, 0, 0, 0.5);
+  /* background: rgba(0, 0, 0, 0.5); */
   padding: 30px 40px;
   border-radius: var(--border-radius);
   animation: fadeIn 1s ease-out;
