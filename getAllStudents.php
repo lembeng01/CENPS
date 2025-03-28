@@ -45,8 +45,15 @@ if (!isset($_SESSION['user'])) {
 }
 
 $dsn = "mysql:host=localhost;dbname=my_database;charset=utf8mb4";
-$dbUser = getenv('DB_USER');
-$dbPass = getenv('DB_PASS');
+// Load database credentials from external configuration file
+$configFile = 'C:/wamp64/config/db_config.ini';
+$config = parse_ini_file($configFile, true);
+if ($config === false) {
+    echo json_encode(["success" => false, "message" => "Failed to load configuration file"]);
+    exit();
+}
+$dbUser = $config['database']['user'];
+$dbPass = $config['database']['pass'];
 
 try {
     $pdo = new PDO($dsn, $dbUser, $dbPass);
